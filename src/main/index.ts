@@ -85,6 +85,5 @@ app.on('window-all-closed', () => { if (process.platform !== 'darwin')
 app.on('before-quit', event => { if (!quitting && service) {
     event.preventDefault();
     quitting = true;
-    service.resources.shutdown();
-    void service.engine.shutdown().finally(() => app.quit());
+    void Promise.all([service.resources.shutdown(),service.engine.shutdown()]).finally(() => app.quit());
 } });

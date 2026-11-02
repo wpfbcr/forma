@@ -130,6 +130,7 @@ export interface Task {
     contextMemoryIds: string[];
 }
 export interface AppState {
+    jobs?:ProcessingJob[];
     libraries?:Library[]; skills?:Skill[];
     version: 1;
     theme: 'light' | 'dark';
@@ -185,3 +186,5 @@ export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];sk
 export interface KnowledgeBinding { libraryId:string; audience:"all"|"leader"|"selected"; memberIds:string[]; }
 
 export interface GenerationTarget { mode:"model"|"agent"; modelId?:string; agentId?:string; }
+
+export interface ProcessingJob { id:string;kind:"wiki"|"skill";libraryId?:string;title:string;target:GenerationTarget;targetLabel:string;description?:string;status:"queued"|"running"|"cancelling"|"completed"|"failed"|"cancelled"|"interrupted";stage:string;createdAt:number;startedAt?:number;updatedAt:number;finishedAt?:number;error?:string;resultId?:string;events:{time:number;message:string}[]; }

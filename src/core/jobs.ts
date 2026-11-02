@@ -1,0 +1,18 @@
+import {randomUUID} from 'node:crypto';
+import {Store} from './storage.js';
+import type {GenerationTarget,ProcessingJob} from './types.js';
+export interface JobControl {signal:AbortSignal;stage:(stage:string,message:string)=>Promise<void>;}
+const active=(status:string)=>['queued','running','cancelling'].includes(status);
+export class Jobs {
+ private shuttingDown=false;
+ private running=new Map<string,{controller:AbortController;promise:Promise<void>}>();private reserved=new Set<string>();
+ constructor(private store:Store){}
+ async initialize(){await this.store.change(s=>{s.jobs??=[];for(const j of s.jobs)if(active(j.status)){j.status='interrupted';j.stage='interrupted';j.error='应用关闭时处理被中断。已保留旧成果，可以检查后重试。';j.finishedAt=Date.now();}});}
+ async start(input:{kind:'wiki'|'skill';libraryId?:string;title:string;target:GenerationTarget;targetLabel:string;description?:string},runner:(control:JobControl)=>Promise<string|void>){const key=input.kind==='wiki'?'wiki:'+input.libraryId:'skill';if(this.reserved.has(key)||this.store.snapshot().jobs?.some(j=>active(j.status)&&(input.kind==='wiki'?j.kind==='wiki'&&j.libraryId===input.libraryId:j.kind==='skill')))throw new Error('同类任务正在执行，请在处理记录中查看');this.reserved.add(key);const id=randomUUID(),createdAt=Date.now();try{await this.store.change(s=>{s.jobs??=[];s.jobs.unshift({...input,id,status:'queued',stage:'queued',createdAt,updatedAt:createdAt,events:[{time:createdAt,message:'任务已创建'}]});});}catch(e){this.reserved.delete(key);throw e;}
+ const controller=new AbortController();const control:JobControl={signal:controller.signal,stage:async(stage,message)=>{controller.signal.throwIfAborted();await this.store.change(s=>{controller.signal.throwIfAborted();const j=s.jobs!.find(j=>j.id===id)!;j.status='running';j.stage=stage;j.startedAt??=Date.now();j.updatedAt=Date.now();j.events.push({time:j.updatedAt,message});});}};
+ const promise=Promise.resolve().then(async()=>{await control.stage('starting','正在准备执行环境');const resultId=await runner(control);await this.store.change(s=>{const j=s.jobs!.find(j=>j.id===id)!;j.status='completed';j.stage='completed';j.resultId=resultId||undefined;j.finishedAt=Date.now();j.updatedAt=j.finishedAt;j.events.push({time:j.updatedAt,message:'处理完成，结果已保存'});});}).catch(async error=>{await this.store.change(s=>{const j=s.jobs!.find(j=>j.id===id)!;j.status=controller.signal.aborted?(this.shuttingDown?'interrupted':'cancelled'):'failed';j.stage=j.status;j.error=controller.signal.aborted?(this.shuttingDown?'应用关闭时处理被中断，原有成果已保留。':'任务已取消，原有成果保持不变。'):error?.name==='TimeoutError'?'生成超时，请检查服务商连接或减少资料后重试':error instanceof Error?error.message:'处理失败';j.finishedAt=Date.now();j.updatedAt=j.finishedAt;j.events.push({time:j.updatedAt,message:j.error!});});}).finally(()=>{this.running.delete(id);this.reserved.delete(key);});this.running.set(id,{controller,promise});return id;
+ }
+ async cancel(id:string){const j=this.store.snapshot().jobs?.find(j=>j.id===id);if(!j)throw new Error('任务不存在');if(!active(j.status))return;if(j.stage==='saving')throw new Error('正在保存结果，请等待保存结束');const run=this.running.get(id);if(!run)throw new Error('当前任务已中断，请刷新处理记录');run.controller.abort();await this.store.change(s=>{const current=s.jobs!.find(j=>j.id===id)!;if(active(current.status)){current.status='cancelling';current.updatedAt=Date.now();current.events.push({time:current.updatedAt,message:'已请求取消，正在结束调用'});}});}
+ async wait(id:string){await this.running.get(id)?.promise;}
+ async shutdown(){this.shuttingDown=true;for(const r of this.running.values())r.controller.abort();await Promise.allSettled([...this.running.values()].map(r=>r.promise));}
+}

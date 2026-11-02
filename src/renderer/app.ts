@@ -30,7 +30,7 @@ function close() { modal.close(); }
 const actions = (submit: string) => `<div class="modal-footer">${btn('取消', 'close')}<button class="btn primary" type="submit">${submit}</button></div>`;
 const selectModels = (selected: string) => `<option value="">选择已配置的模型</option>${state.models.map(m => `<option value="${m.id}" ${m.id === selected ? 'selected' : ''}>${esc(m.name)} · ${esc(m.provider)}</option>`).join('')}`;
 let renderedKey = '';
-const resources=resourceUI(()=>state,api,showModal,close,render,toast);
+const resources=resourceUI(()=>state,api,showModal,close,render,toast,navigate);
 function render() {
     if (!state)
         return;
@@ -41,8 +41,8 @@ function render() {
     const input = document.getElementById('leader-message') as HTMLTextAreaElement | null, draft = input?.value, focused = input === document.activeElement, caret = input?.selectionStart, stream = document.querySelector('.dialogue-stream'), scrollTop = stream?.scrollTop || 0, nearBottom = stream ? stream.scrollHeight - stream.clientHeight - scrollTop < 80 : true;
     document.body.dataset.theme = state.theme;
     document.body.dataset.page = page;
-    const titles: Record<string, string> = { home: '工作台', agents: '我的 Agent', teams: '我的团队', team: '团队画布', task: '任务工作空间', models: '模型中心', resources: '记忆与工具', settings: '设置', knowledge:'知识库',skills:'技能仓库' };
-    app.innerHTML = `<div class="app"><aside class="sidebar"><div class="brand"><span class="logo"></span><span class="brand-name">forma</span></div><div class="workspace">${I('folder')}<span class="grow">我的个人空间</span><span class="pill" style="color:#b8c9b6;background:#ffffff0a">本地</span></div>${[['home', 'home', '工作台'], ['agents', 'agent', '我的 Agent'], ['teams', 'team', '我的团队'], ['models', 'model', '模型中心'], ['knowledge','book','知识库'], ['skills','spark','技能仓库'], ['resources', 'book', '记忆与工具']].map(([p, ic, label]) => `<button class="nav ${(page === p || page === 'task' && p === 'home' || page === 'team' && p === 'teams') ? 'active' : ''}" data-act="nav" data-page="${p}">${I(ic)}${label}</button>`).join('')}<div class="nav-label">YOUR SPACE, YOUR AGENTS</div><button class="nav" data-act="new-agent">${I('plus')}创建你的 Agent</button><div class="sidebar-bottom"><button class="nav ${page === 'settings' ? 'active' : ''}" data-act="nav" data-page="settings">${I('settings')}设置</button><div class="side-note">${I('shield')}数据保存在这台电脑</div></div></aside><div class="main"><header class="topbar"><div class="row">${btn(I('menu'), 'menu', 'aria-label="打开导航"', 'ghost icon mobile-menu')}<div class="breadcrumb">个人空间 <span>/</span><span>${titles[page]}</span></div></div><div class="top-actions">${btn(I('search'), 'search', 'aria-label="快速查找"', 'ghost icon')}<span class="pill">0.2 Alpha</span>${btn(I(state.theme === 'dark' ? 'sun' : 'moon'), 'theme', 'aria-label="切换主题"', 'ghost icon')}</div></header><main class="content" id="content">${view()}</main></div></div>`;
+    const titles: Record<string, string> = { home: '工作台', agents: '我的 Agent', teams: '我的团队', team: '团队画布', task: '任务工作空间', models: '模型中心', resources: '记忆与工具', activity:'处理记录',settings: '设置', knowledge:'知识库',skills:'技能仓库' };
+    app.innerHTML = `<div class="app"><aside class="sidebar"><div class="brand"><span class="logo"></span><span class="brand-name">forma</span></div><div class="workspace">${I('folder')}<span class="grow">我的个人空间</span><span class="pill" style="color:#b8c9b6;background:#ffffff0a">本地</span></div>${[['home', 'home', '工作台'], ['agents', 'agent', '我的 Agent'], ['teams', 'team', '我的团队'], ['models', 'model', '模型中心'], ['knowledge','book','知识库'], ['skills','spark','技能仓库'], ['resources', 'book', '记忆与工具']].map(([p, ic, label]) => `<button class="nav ${(page === p || page === 'task' && p === 'home' || page === 'team' && p === 'teams') ? 'active' : ''}" data-act="nav" data-page="${p}">${I(ic)}${label}</button>`).join('')}<div class="nav-label">YOUR SPACE, YOUR AGENTS</div><button class="nav" data-act="new-agent">${I('plus')}创建你的 Agent</button><div class="sidebar-bottom"><button class="nav ${page === 'settings' ? 'active' : ''}" data-act="nav" data-page="settings">${I('settings')}设置</button><div class="side-note">${I('shield')}数据保存在这台电脑</div></div></aside><div class="main"><header class="topbar"><div class="row">${btn(I('menu'), 'menu', 'aria-label="打开导航"', 'ghost icon mobile-menu')}<div class="breadcrumb">个人空间 <span>/</span><span>${titles[page]}</span></div></div><div class="top-actions">${btn(I('search'), 'search', 'aria-label="快速查找"', 'ghost icon')}<button type="button" class="btn ghost sm" data-act="nav" data-page="activity">处理记录${(state.jobs||[]).filter(j=>["queued","running","cancelling"].includes(j.status)).length?" · "+(state.jobs||[]).filter(j=>["queued","running","cancelling"].includes(j.status)).length:""}</button><span class="pill">0.2 Alpha</span>${btn(I(state.theme === 'dark' ? 'sun' : 'moon'), 'theme', 'aria-label="切换主题"', 'ghost icon')}</div></header><main class="content" id="content">${view()}</main></div></div>`;
     for (const field of fields) {
         const el = [...app.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('form [name]')].find(el => el.closest('form')?.id === field.form && el.name === field.name);
         if (!el)
@@ -69,8 +69,9 @@ function render() {
         nextStream.scrollTop = nearBottom ? nextStream.scrollHeight : scrollTop;
     if (page === 'team')
         requestAnimationFrame(drawEdges);
+    resources.refreshJobs();
 }
-function view() { if(page==='knowledge')return resources.knowledge();if(page==='skills')return resources.skills(); if (page === 'agents')
+function view() {if(page==='activity')return resources.activity(); if(page==='knowledge')return resources.knowledge();if(page==='skills')return resources.skills(); if (page === 'agents')
     return agentsView(); if (page === 'models')
     return modelsView(); if (page === 'teams')
     return teamsView(); if (page === 'team')
