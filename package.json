@@ -1,0 +1,61 @@
+{
+  "name": "forma",
+  "version": "0.1.0-alpha.1",
+  "description": "A local-first personal AI workspace for your agents and teams",
+  "author": "Forma contributors",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/main/index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "npm run build && electron .",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.renderer.json --noEmit",
+    "test": "npm run build:core && node --test tests/*.test.cjs",
+    "check": "npm run typecheck && npm test && npm run build",
+    "pack": "npm run build && electron-builder --dir --publish never",
+    "dist": "npm run build && electron-builder --publish never",
+    "build:core": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0",
+    "typescript": "^5.9.3"
+  },
+  "build": {
+    "appId": "org.forma.desktop",
+    "productName": "Forma",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "resources/icon.icns"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "resources/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

@@ -1,0 +1,39 @@
+# 0.1.0-alpha.1 验证记录
+
+记录日期：2026-11-02。
+
+## 已通过
+
+- `npm run check`：TypeScript 检查、22 项核心测试、主进程及界面构建均通过。
+- 状态并发写入、失败回滚和重启读取。
+- 相对路径、父目录、符号链接、Windows 特殊路径与备用数据流检查。
+- Leader 计划的成员、唯一 ID、依赖和循环校验。
+- 两轮实际文件持久化、上下文快照、成果版本保留。
+- 暂停、追加要求排队、继续、停止、关闭时保留暂停状态。
+- 服务失败明确进入失败状态，不生成虚假完成结果。
+- 密钥独立加密存储接口、并发保存、系统存储不可用时拒绝保存。
+- 兼容 API 与 Anthropic 协议转换、受限文件工具。
+- 外部 Agent 输出解析、stdin 传递、ZIP 中文文件与内容生成。
+- macOS Apple Silicon 开发应用正常启动，preload 与本地状态接口可用。
+- 通过原生窗口创建、修改中文 Agent 配置，并确认其真实写入项目内的开发数据目录。
+- 本机版本检测识别 Codex CLI 0.162.1 与 Claude Code 2.1.91；只执行版本检查，未发起模型任务。
+- `npm run pack -- --config.electronDist=node_modules/electron/dist --config.mac.identity=null` 成功生成未签名的 Apple Silicon 应用。
+- 包内应用标识为 `org.forma.desktop`，已包含 Forma 图标。
+
+## 尚未验证或尚未完成
+
+- 未使用任何真实 API 密钥或本机 Agent 登录额度进行任务联调。核心测试使用固定执行器与响应。
+- 系统钥匙串实际保存用户密钥的交互尚未测试；加密存储接口使用受控测试实现验证。
+- 未在 Windows 或 Intel Mac 实机运行，GitHub Actions 尚未在远程仓库执行。
+- 未完成开发者签名、公证、自动更新或正式发行。
+- 当前产物为未签名 Alpha；源码构建与应用包构建成功不等同于完整的发行验收。
+
+## 本地交付位置
+
+- 源码：当前仓库。
+- 开发截图：`output/desktop-alpha.png`，不提交版本库。
+- macOS 应用：`release/mac-arm64/Forma.app`。
+- macOS 压缩包：`release/Forma-0.1.0-alpha.1-mac-arm64.zip`。
+- 开发验证数据：`.data/dev`，已被 Git 忽略，不包含模型连接或密钥。
+
+安装包、依赖和测试数据均不进入源码提交。远程 GitHub 仓库尚未绑定。
