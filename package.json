@@ -17,7 +17,8 @@
     "check": "npm run typecheck && npm test && npm run build",
     "pack": "npm run build && electron-builder --dir --publish never",
     "dist": "npm run build && electron-builder --publish never",
-    "build:core": "tsc -p tsconfig.json"
+    "build:core": "tsc -p tsconfig.json",
+    "bench:retrieval": "npm run build:core && node benchmarks/retrieval.cjs"
   },
   "dependencies": {
     "mammoth": "^1.9.1",

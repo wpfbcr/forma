@@ -1,0 +1,101 @@
+{
+  "environment": {
+    "platform": "darwin",
+    "release": "25.3.0",
+    "arch": "arm64",
+    "cpu": "Apple M5",
+    "node": "v26.4.0"
+  },
+  "method": "Synthetic UTF-8 text; 5 warmups; sequential warm-filesystem samples; no LLM, parsing/import, OCR, UI or concurrent-query load.",
+  "latency": [
+    {
+      "documents": 100,
+      "index_mib": 0.77,
+      "rank_only": {
+        "p50_ms": 0.93,
+        "p95_ms": 1.17,
+        "samples": 40
+      },
+      "search_with_file_read_and_json": {
+        "p50_ms": 1.67,
+        "p95_ms": 2.27,
+        "samples": 40
+      },
+      "prepare_six_agents_same_library": {
+        "p50_ms": 9.88,
+        "p95_ms": 10.6,
+        "samples": 10
+      }
+    },
+    {
+      "documents": 500,
+      "index_mib": 7.68,
+      "rank_only": {
+        "p50_ms": 8.89,
+        "p95_ms": 10.94,
+        "samples": 40
+      },
+      "search_with_file_read_and_json": {
+        "p50_ms": 14.61,
+        "p95_ms": 17.09,
+        "samples": 40
+      },
+      "prepare_six_agents_same_library": {
+        "p50_ms": 96.88,
+        "p95_ms": 100.67,
+        "samples": 10
+      }
+    },
+    {
+      "documents": 500,
+      "index_mib": 14.84,
+      "rank_only": {
+        "p50_ms": 16.74,
+        "p95_ms": 20.71,
+        "samples": 40
+      },
+      "search_with_file_read_and_json": {
+        "p50_ms": 29.47,
+        "p95_ms": 32.94,
+        "samples": 40
+      },
+      "prepare_six_agents_same_library": {
+        "p50_ms": 197.45,
+        "p95_ms": 198.96,
+        "samples": 10
+      }
+    }
+  ],
+  "quality": [
+    {
+      "name": "exact unique keyword (easy smoke cases)",
+      "cases": 20,
+      "document_hit_at_8": 1,
+      "answer_in_excerpt_at_8": 1
+    },
+    {
+      "name": "paraphrase with no shared keyword",
+      "cases": 10,
+      "document_hit_at_8": 0,
+      "answer_in_excerpt_at_8": 0
+    },
+    {
+      "name": "correct document, answer beyond first matching excerpt",
+      "cases": 10,
+      "document_hit_at_8": 1,
+      "answer_in_excerpt_at_8": 0
+    },
+    {
+      "name": "same-term distractors outrank exact-phrase relevant document by stable input order",
+      "cases": 10,
+      "document_hit_at_8": 0,
+      "answer_in_excerpt_at_8": 0
+    }
+  ],
+  "cross_library": {
+    "libraries": 2,
+    "candidate_results": 9,
+    "sent_to_member": 6,
+    "answer_sent": false
+  }
+}
