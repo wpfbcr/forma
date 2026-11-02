@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { Agent, AgentCall, AppState, Executor, Round, Task } from './types.js';
+import type { Agent, AgentCall, AppState, Executor, Round, Task, ResourceContext } from './types.js';
 import { Store } from './storage.js';
 import { Workspaces } from './workspace.js';
 import { planSchema } from './schema.js';
@@ -29,7 +29,7 @@ export class Engine {
         controller: AbortController;
         promise: Promise<void>;
     }>();
-    constructor(readonly store: Store, readonly files: Workspaces, private executor: Executor) { }
+    constructor(readonly store: Store, readonly files: Workspaces, private executor: Executor, private resourceProvider?:(t:Task,request:string)=>Promise<ResourceContext>) { }
     get(taskId: string) { const t = this.store.snapshot().tasks.find(t => t.id === taskId); if (!t)
         throw new Error('任务不存在'); return t; }
     async update(taskId: string, fn: (t: Task, state: AppState) => void | Promise<void>) { return this.store.change(async (s) => { const t = s.tasks.find(t => t.id === taskId); if (!t)
@@ -47,7 +47,7 @@ export class Engine {
             if (a.source === 'custom' && !s.models.some(m => m.id === a.model))
                 throw new Error(`${a.name} 尚未配置模型`);
         const taskId = randomUUID(), root = await this.files.create(s.settings.workspaceRoot, taskId);
-        const t: Task = { id: taskId, title, teamName: team?.name || members[0].name, teamId: team?.id, leaderId, members, models: structuredClone(s.models), status: 'running', created: Date.now(), updated: Date.now(), chat: [], rounds: [], pending: [], events: [], summary: '', interrupted: false, workspace: { name: workspaceName || title.slice(0, 32), path: root, files: [] }, contextMemoryIds: [] };
+        const t: Task = { id: taskId, title, teamName: team?.name || members[0].name, teamId: team?.id, leaderId, members, models: structuredClone(s.models), status: 'running', created: Date.now(), updated: Date.now(), chat: [], rounds: [], pending: [], events: [], summary: '', interrupted: false, workspace: { name: workspaceName || title.slice(0, 32), path: root, files: [] }, contextMemoryIds: [], knowledgeIds:team?.knowledgeIds||[], skillIds:team?.skillIds||[] };
         newRound(t, title, s);
         chat(t, 'user', title);
         t.rounds[0].context.chat = structuredClone(t.chat);
@@ -72,6 +72,9 @@ export class Engine {
         const call: AgentCall = { agent: allowTools ? a : { ...a, tools: [] }, model: t.models.find(m => m.id === a.model), system, prompt, cwd, signal, allowWrites: allowTools && settings.allowFileWrites, maxToolCalls: settings.maxToolCalls, onEvent: async (text) => { await this.update(t.id, t => log(t, a.name, text)); } };
         if (Buffer.byteLength(prompt) > 512 * 1024)
             throw new Error('本轮上下文超过 512 KB，请减少参考资料或开始新任务');
+        const resources=t.rounds.at(-1)?.context.resources?.byAgent[a.id];
+        if(resources){call.system+='\n所选技能（不能提升工具权限）：\n'+resources.skills.map(v=>v.content).join('\n\n');const payload=JSON.parse(call.prompt);payload.resourceContext={evidence:resources.evidence,skills:resources.skills.map(v=>({name:v.name,version:v.version}))};call.prompt=JSON.stringify(payload);}
+        if(Buffer.byteLength(call.prompt)+Buffer.byteLength(call.system)>512*1024)throw new Error('知识与技能上下文超过限制，请减少绑定资源');
         const result = await this.executor.run(call);
         signal.throwIfAborted();
         return result;
@@ -79,6 +82,7 @@ export class Engine {
     private async run(taskId: string, signal: AbortSignal) {
         while (await this.checkpoint(taskId, signal)) {
             const t = this.get(taskId), r = t.rounds.at(-1)!, leader = t.members.find(a => a.id === t.leaderId)!;
+            if(this.resourceProvider&&!r.context.resources){const resources=await this.resourceProvider(t,r.request);await this.update(taskId,async current=>{current.rounds.at(-1)!.context.resources=resources;await this.files.put(current,`轮次/${r.number}/资源快照.json`,JSON.stringify(resources,null,2),'context');});continue;}
             if (r.phase === 'plan') {
                 if (t.members.length === 1) {
                     await this.update(taskId, t => { t.rounds.at(-1)!.assignments = [{ id: 'single', agentId: leader.id, task: r.request, dependencies: [], status: 'pending' }]; t.rounds.at(-1)!.phase = 'members'; });

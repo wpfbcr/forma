@@ -1,6 +1,6 @@
 {
   "name": "forma",
-  "version": "0.1.0-alpha.1",
+  "version": "0.2.0-alpha.1",
   "description": "A local-first personal AI workspace for your agents and teams",
   "author": "Forma contributors",
   "license": "MIT",
@@ -20,6 +20,9 @@
     "build:core": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "mammoth": "^1.9.1",
+    "pdf-parse": "^1.1.1",
+    "yaml": "^2.8.1",
     "zod": "4.3.6"
   },
   "devDependencies": {

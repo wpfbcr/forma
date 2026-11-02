@@ -13,6 +13,7 @@ export interface Model {
     status: 'untested' | 'ready' | 'failed';
 }
 export interface Agent {
+    knowledgeIds?:string[]; skillIds?:string[];
     id: string;
     name: string;
     source: Source;
@@ -26,6 +27,7 @@ export interface Agent {
     tone: string;
 }
 export interface Team {
+    knowledgeIds?:string[]; skillIds?:string[];
     id: string;
     name: string;
     description: string;
@@ -75,6 +77,7 @@ export interface Assignment {
     error?: string;
 }
 export interface RoundContext {
+    resources?:ResourceContext;
     sharedMemoryIds?: string[];
     goal: string;
     request: string;
@@ -94,6 +97,7 @@ export interface Round {
     assignments: Assignment[];
 }
 export interface Task {
+    knowledgeIds?:string[]; skillIds?:string[];
     id: string;
     title: string;
     teamName: string;
@@ -123,6 +127,7 @@ export interface Task {
     contextMemoryIds: string[];
 }
 export interface AppState {
+    libraries?:Library[]; skills?:Skill[];
     version: 1;
     theme: 'light' | 'dark';
     agents: Agent[];
@@ -167,3 +172,8 @@ export interface AgentCall {
 export interface Executor {
     run(call: AgentCall): Promise<string>;
 }
+
+export interface Skill { id:string; name:string; description:string; content:string; version:number; enabled:boolean; origin:"builtin"|"manual"|"ai"; }
+export interface Library { id:string; name:string; directory?:string; count:number; version:number; status:"ready"|"indexing"|"failed"; error?:string; wiki?:string; wikiDraft?:string; wikiVersion?:number; autoSync?:boolean; }
+export interface Evidence { libraryId:string; library:string; sourceId:string; source:string; sourceVersion:number; citation:string; text:string; }
+export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[]}>; }

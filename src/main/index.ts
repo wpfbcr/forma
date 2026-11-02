@@ -21,6 +21,7 @@ async function start() {
     const vault = new Vault(path.join(data, 'credentials.enc.json'), { available: () => safeStorage.isAsyncEncryptionAvailable(), encrypt: s => safeStorage.encryptStringAsync(s), decrypt: async (b) => (await safeStorage.decryptStringAsync(Buffer.from(b))).result });
     await vault.open();
     service = new Service(store, vault, new Workspaces());
+    await service.resources.initialize();
     store.onChange = s => { if (window && !window.isDestroyed())
         window.webContents.send('forma:state', s); };
     session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
@@ -30,6 +31,8 @@ async function start() {
             if (event.sender !== window?.webContents || event.senderFrame?.url !== renderer)
                 throw new Error('请求来源不受信任');
             const request = z.object({ action: z.string().max(80), payload: z.unknown().optional() }).parse(raw);
+            if(request.action==='knowledge.chooseDirectory'){const v=z.object({name:z.string().min(1).max(100)}).parse(request.payload);const result=await dialog.showOpenDialog(window!,{title:'选择知识资料目录（只读）',properties:['openDirectory']});if(result.canceled)return{ok:true,data:null};const dir=await fs.realpath(result.filePaths[0]);const id=await service.resources.createLibrary(v.name,dir);await service.resources.sync(id);return{ok:true,data:id};}
+            if(request.action==='knowledge.importFiles'){const id=entityId.parse(request.payload);service.resources.library(id);const result=await dialog.showOpenDialog(window!,{title:'导入知识资料',properties:['openFile','multiSelections'],filters:[{name:'文档',extensions:['md','txt','csv','json','pdf','docx','html']}]});return{ok:true,data:result.canceled?null:await service.resources.importFiles(id,result.filePaths)};}
             if (request.action === 'workspace.chooseRoot') {
                 const result = await dialog.showOpenDialog(window!, { title: '选择新任务的工作空间根目录', properties: ['openDirectory', 'createDirectory'] });
                 if (!result.canceled) {
@@ -82,5 +85,6 @@ app.on('window-all-closed', () => { if (process.platform !== 'darwin')
 app.on('before-quit', event => { if (!quitting && service) {
     event.preventDefault();
     quitting = true;
+    service.resources.shutdown();
     void service.engine.shutdown().finally(() => app.quit());
 } });

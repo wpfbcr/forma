@@ -4,7 +4,19 @@
 
 A local-first personal AI workspace. Create agents, connect installed agent tools, and coordinate your team through one leader conversation.
 
-Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.1.0-alpha.1**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
+Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.2.0-alpha.1**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
+
+## 0.2 新增：知识与技能
+
+- 新建本地知识库，关联只读目录或导入 Markdown、TXT、CSV、JSON、HTML、文本型 PDF、DOCX。
+- 中文关键词检索、来源标识、资料版本、目录手动/自动同步。
+- 使用已配置的 Agent 整理 Wiki 草稿；人工采纳后保存正文及修订，并可被后续检索。
+- 技能源码编辑、AI 辅助创建草稿、8 个可选预置技能、启用与版本管理。
+- 为 Agent、团队或任务绑定知识和技能；每轮执行固定所用证据和技能内容，保存资源快照。
+
+当前技能以指令和模板为主，脚本及扩展资源包执行尚未开放。当前检索为本地关键词检索；每库最多 500 个来源、16 MB 解析文本，单文件最多 10 MB、解析文本最多 256 KB。扫描件 OCR、向量检索、复杂文档排版、分批主题图谱整理和外部 llm_wiki 连接器尚未实现。Wiki 草稿每次处理前 30 份资料、每份最多 4000 字符。
+
+新增内容由 Forma 独立实现，未复制 nashsu/llm_wiki 的 GPL 代码。AI 技能创建与 Wiki 整理使用用户自己的 Agent，实际调用需用户配置后验证。
 
 ## 已实现
 
