@@ -1,3 +1,4 @@
+import {discoverLoginSources,importedModel,routeCall} from './login-sources.js';
 import {modelBase} from './provider-http.js';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
@@ -7,15 +8,16 @@ import { Engine } from './engine.js';
 import { Vault } from './vault.js';
 import { ModelClient } from './models.js';
 import { Resources } from './resources.js';
-import { detectAgents, runExternal } from './external.js';
+import { detectAgents } from './external.js';
 import { agentInput, entityId, materialInput, memoryInput, messageInput, modelInput, taskInput, teamInput, validateEndpoint } from './schema.js';
 import type { Executor, Request } from './types.js';
 export class Service {
     readonly engine: Engine;
     readonly client: ModelClient;
     readonly resources:Resources;
-    constructor(readonly store:Store,readonly vault:Vault,readonly files:Workspaces,executor?:Executor){this.client=new ModelClient(vault,files);const runner=executor||{run:(call:import('./types.js').AgentCall)=>call.agent.source==='external'?runExternal(call):this.client.run(call)};this.resources=new Resources(store,runner);this.engine=new Engine(store,files,runner,(t,q)=>this.resources.prepare(t,q));}
+    constructor(readonly store:Store,readonly vault:Vault,readonly files:Workspaces,executor?:Executor){this.client=new ModelClient(vault,files);const runner=executor||{run:(call:import('./types.js').AgentCall)=>routeCall(call,this.client)};this.resources=new Resources(store,runner);this.engine=new Engine(store,files,runner,(t,q)=>this.resources.prepare(t,q));}
 
+    async testLoginModel(model:import('./types.js').Model){const answer=await this.resources.generate({mode:'model',modelId:model.id},'Return a short text response.','Reply with OK.');if(!answer.trim())throw new Error('未收到文本回复');return{ok:true,message:'本机登录来源生成成功'};}
     async dispatch(request: Request): Promise<unknown> {
         const p = request.payload;
         switch (request.action) {
@@ -38,6 +40,8 @@ export class Service {
             case 'resources.bind':{const v=z.object({scope:z.enum(['agent','team','task']),id:entityId,knowledgeIds:z.array(entityId).max(12),skillIds:z.array(entityId).max(12)}).parse(p);await this.store.change(s=>{if(v.knowledgeIds.some(id=>!s.libraries?.some(l=>l.id===id))||v.skillIds.some(id=>!s.skills?.some(l=>l.id===id)))throw new Error('资源不存在');const target=(v.scope==='agent'?s.agents:v.scope==='team'?s.teams:s.tasks).find(x=>x.id===v.id);if(!target)throw new Error('绑定对象不存在');target.knowledgeIds=v.knowledgeIds;target.skillIds=v.skillIds;});return true;}
             case 'model.setDefault':{const id=z.union([entityId,z.literal('')]).parse(p);await this.store.change(s=>{if(id&&!s.models.some(m=>m.id===id))throw new Error('默认模型不存在');s.settings.defaultModelId=id||undefined;});return true;}
             case 'state.get': return this.store.snapshot();
+            case 'models.discoverLogins':return discoverLoginSources(this.client);
+            case 'model.importLogin':{const v=z.object({engine:z.enum(['codex','claude','magpie']),modelId:z.string().min(1).max(1000)}).parse(p);const sources=await discoverLoginSources(this.client);const source=sources.find(s=>s.engine===v.engine&&s.status==='signed-in');const item=source?.models.find(m=>m.id===v.modelId);if(!source||!item)throw new Error('登录来源或模型已不可用，请重新发现');const model=importedModel(source,item);await this.store.change(s=>{const i=s.models.findIndex(m=>m.id===model.id);if(i<0)s.models.push(model);else s.models[i]={...model,status:s.models[i].status};});return model.id;}
             case 'agents.detect': return detectAgents();
             case 'agent.save': {
                 const input = agentInput.parse(p);
@@ -74,7 +78,7 @@ export class Service {
             }
             case 'model.list':{const input=z.object({id:entityId.optional(),endpoint:z.string().url().max(2000),protocol:z.enum(['openai-compatible','anthropic']),apiKey:z.string().max(8192).optional()}).parse(p);const old=this.store.snapshot().models.find(m=>m.id===input.id);if(!input.apiKey?.trim()&&old&&this.vault.has(old.id)&&(modelBase(input.endpoint)!==modelBase(old.endpoint)||input.protocol!==old.protocol))throw new Error('连接地址或协议已变更，请重新输入密钥后获取模型列表');const models=await this.client.listModels({...input,id:old?.id,apiKey:input.apiKey?.trim()||undefined});return{models,endpoint:validateEndpoint(input.endpoint)};}
             case 'model.save': {
-                const input = modelInput.parse(p), id = input.id || randomUUID();
+                const input = modelInput.parse(p), id = input.id || randomUUID();if(this.store.snapshot().models.some(m=>m.id===id&&m.source&&m.source!=='api'))throw new Error('登录来源由账户管理，请刷新来源或添加单独 API 连接');
                 const endpoint = validateEndpoint(input.endpoint);
                 const old=this.store.snapshot().models.find(m=>m.id===id);if(!input.apiKey?.trim()&&old&&this.vault.has(id)&&(modelBase(endpoint)!==modelBase(old.endpoint)||input.protocol!==old.protocol))throw new Error('地址或协议已变更，请重新输入密钥后保存');
                 if (input.apiKey?.trim())
@@ -101,7 +105,7 @@ export class Service {
                 if (!m)
                     throw new Error('模型不存在');
                 try {
-                    const result = await this.client.test(m);
+                    const result=m.source&&m.source!=='api'&&m.source!=='magpie'?await this.testLoginModel(m):await this.client.test(m);
                     await this.store.change(s => { s.models.find(m => m.id === id)!.status = 'ready'; });
                     return result;
                 }

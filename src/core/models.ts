@@ -12,7 +12,7 @@ const toolSpecs = [
 export class ModelClient {
     constructor(private vault: Pick<Vault, 'get'>, private workspaces: Workspaces, private request: typeof fetch = fetch) { }
     async post(model: Model, body: unknown, signal: AbortSignal) {
-        const base = modelBase(model.endpoint), key = await this.vault.get(model.id);
+        const base = modelBase(model.endpoint), key = model.source==='magpie'?'magpie':await this.vault.get(model.id);
         const endpoint = model.protocol === 'anthropic' ? `${base}/messages` : `${base}/chat/completions`;
         const headers: Record<string,string> = {...providerHeaders(model.protocol,key),'content-type':'application/json'};
         if (model.protocol === 'anthropic') {

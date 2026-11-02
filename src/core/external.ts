@@ -44,13 +44,14 @@ export function capture(command: Command, args: string[], input: string, options
     cwd?: string;
     signal?: AbortSignal;
     timeoutMs?: number;
+    includeStderr?:boolean;allowNonZero?:boolean;env?:NodeJS.ProcessEnv;
 } = {}): Promise<string> {
     return new Promise((resolve, reject) => {
         if (options.signal?.aborted) {
             reject(new Error('执行已停止'));
             return;
         }
-        const child = spawn(command.file, [...command.prefix, ...args], { cwd: options.cwd, env: process.env, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true, shell: false, detached: process.platform !== 'win32' });
+        const child = spawn(command.file, [...command.prefix, ...args], { cwd: options.cwd, env: options.env||process.env, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true, shell: false, detached: process.platform !== 'win32' });
         let output = '', size = 0, settled = false;
         let killTimer: ReturnType<typeof setTimeout> | undefined;
         const kill = () => { if (!child.pid)
@@ -80,9 +81,9 @@ export function capture(command: Command, args: string[], input: string, options
         }
         else
             output += chunk.toString(); });
-        child.stderr.on('data', () => { }); // Do not persist inherited credentials or raw diagnostic output.
+        child.stderr.on('data', chunk => {if(options.includeStderr){size+=chunk.length;if(size>1024*1024){kill();finish(new Error('状态输出超过限制'));}else output+=chunk.toString();}}); // Do not persist inherited credentials or raw diagnostic output.
         child.on('error', () => finish(new Error('无法启动本机 Agent，请检查安装与执行权限')));
-        child.on('close', code => { clearTimeout(killTimer); finish(code === 0 ? undefined : new Error(`本机 Agent 退出（${code ?? '终止'}），请在终端确认登录和版本`), output); });
+        child.on('close', code => { clearTimeout(killTimer); finish(code === 0||options.allowNonZero ? undefined : new Error(`本机 Agent 退出（${code ?? '终止'}），请在终端确认登录和版本`), output); });
         child.stdin.on('error', () => { });
         child.stdin.end(input);
     });
@@ -119,16 +120,39 @@ catch {
 } if (value.is_error)
     throw new Error('Claude Code 执行失败，请检查其登录状态与服务配置'); if (typeof value.result !== 'string' || !value.result.trim())
     throw new Error('Claude Code 未返回最终文本'); return value.result; }
+export function externalInvocation(call: AgentCall, inherited: NodeJS.ProcessEnv = process.env) {
+    const engine = call.agent.engine;
+    if (engine === 'builtin') throw new Error('无效执行器');
+    const writes = call.allowWrites && call.agent.tools.includes('write_files');
+    const args = engine === 'codex'
+        ? ['exec', '--json', '--color', 'never', '--sandbox', writes ? 'workspace-write' : 'read-only', '--skip-git-repo-check', '--ephemeral', '-C', call.cwd]
+        : ['-p', '--output-format', 'json', '--no-session-persistence', '--permission-mode', 'dontAsk', '--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--settings', '{"disableAllHooks":true}', '--tools', writes ? 'Read,Glob,Grep,Write,Edit' : call.agent.tools.includes('read_files') ? 'Read,Glob,Grep' : '', '--allowedTools', writes ? 'Read,Glob,Grep,Write,Edit' : 'Read,Glob,Grep'];
+    const env = {...inherited}, selected = call.model;
+    if (selected?.source === 'magpie') {
+        if (selected.endpoint !== 'http://127.0.0.1:3425/v1') throw new Error('网关来源只允许已发现的本机 Magpie 地址');
+        if (engine === 'codex') {
+            args.push('-c', 'model_provider="forma_magpie"', '-c', 'model_providers.forma_magpie={name="Forma Magpie",base_url="http://127.0.0.1:3425/v1",wire_api="responses",env_key="FORMA_MAGPIE_KEY",supports_websockets=false}', '--model', selected.model);
+            env.FORMA_MAGPIE_KEY = 'magpie';
+        } else {
+            delete env.CLAUDE_CODE_OAUTH_TOKEN;
+            delete env.ANTHROPIC_AUTH_TOKEN;
+            env.ANTHROPIC_API_KEY = 'magpie';
+            env.ANTHROPIC_BASE_URL = 'http://127.0.0.1:3425';
+            args.push('--model', selected.model);
+        }
+    } else if (selected?.source === engine && selected.model !== '__cli_default__') {
+        args.push('--model', selected.model);
+    }
+    if (engine === 'codex') args.push('-');
+    return {args, env};
+}
 export async function runExternal(call: AgentCall) {
     const engine = call.agent.engine;
-    if (engine === 'builtin')
-        throw new Error('无效执行器');
+    if (engine === 'builtin') throw new Error('无效执行器');
     const command = await findCommand(engine);
-    if (!command)
-        throw new Error(`未找到 ${engine}，请先安装并登录`);
-    const writes = call.allowWrites && call.agent.tools.includes('write_files');
-    const args = engine === 'codex' ? ['exec', '--json', '--color', 'never', '--sandbox', writes ? 'workspace-write' : 'read-only', '--skip-git-repo-check', '--ephemeral', '-C', call.cwd, '-'] : ['-p', '--output-format', 'json', '--no-session-persistence', '--permission-mode', 'dontAsk', '--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--settings', '{"disableAllHooks":true}', '--tools', writes ? 'Read,Glob,Grep,Write,Edit' : call.agent.tools.includes('read_files') ? 'Read,Glob,Grep' : '', '--allowedTools', writes ? 'Read,Glob,Grep,Write,Edit' : 'Read,Glob,Grep'];
+    if (!command) throw new Error(`未找到 ${engine}，请先安装并登录`);
+    const {args, env} = externalInvocation(call);
     await call.onEvent(`调用本机 ${engine}，工作目录已隔离`);
-    const result = await capture(command, args, call.system + '\n\n' + call.prompt, { cwd: call.cwd, signal: call.signal });
+    const result = await capture(command, args, call.system + '\n\n' + call.prompt, {cwd:call.cwd, signal:call.signal, env, timeoutMs:call.model?.timeoutMs});
     return engine === 'codex' ? parseCodex(result) : parseClaude(result);
 }

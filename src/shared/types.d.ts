@@ -1,6 +1,7 @@
 export type Source = 'custom' | 'external';
 export type TaskStatus = 'running' | 'pausing' | 'paused' | 'done' | 'stopped' | 'failed';
 export interface Model {
+    source?:"api"|"codex"|"claude"|"magpie";
     id: string;
     name: string;
     provider: string;

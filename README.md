@@ -59,7 +59,7 @@ node node_modules/electron/install.js
 
 ## 开始第一项任务
 
-1. 在“模型中心”填写 Base URL、协议和 API Key，点击“获取模型列表”，搜索并选择模型。显示名称和服务商名称可自动补全；不支持列表的服务可在高级设置手填。
+1. 在“模型中心”点击“发现本机登录源”，接入已登录的 Codex / Claude Code，无需填写 Base URL 和 API Key；也可以添加 API 服务，通过地址与密钥获取模型列表。
 2. 点击“测试连接”，验证一次真实文本调用。测试可能产生服务商费用。
 3. 创建 Agent 并分配模型；也可以接入已经在终端安装、登录的 Codex 或 Claude Code。
 4. 创建团队并指定 Leader；单个 Agent 也可以独立运行。
@@ -67,6 +67,18 @@ node node_modules/electron/install.js
 6. 后续只与 Leader 对话。资料、上下文、成员进度和成果在右侧工作空间查看。
 
 模型地址支持服务根地址、版本前缀或完整接口地址；根地址默认补全 /v1，自定义 API 前缀保留。例如兼容服务通常填写 `https://你的服务地址/v1`，程序追加 `/chat/completions`；Anthropic 协议追加 `/messages`。HTTP 仅允许本机地址，远程服务要求 HTTPS。
+
+## 已登录账户与 Magpie 路由
+
+模型中心可检查 Codex、Claude Code 的原生登录状态。模型加入后可分配给自建 Agent、同类原生 Agent、团队成员，或设为 Wiki / AI 技能生成的全局默认模型。认证和刷新由原 CLI 维护，Forma 不读取或复制认证文件、钥匙串令牌，也不修改原工具的全局配置。
+
+- Codex 模型目录来自本机模型缓存，另提供“当前默认模型”；缓存可能过期。
+- Claude Code 提供默认模型及 sonnet / opus / haiku 别名，由原工具解析；不是账户在线权益列表。
+- 使用 CLI 来源的自建 Agent 会通过对应原 CLI 执行，工具与权限由该 CLI 适配器控制。API 模型仍通过 HTTP 执行，二者并非完全相同的运行环境。
+- 已运行的 [Magpie](https://github.com/yetone/magpie) 网关可在本机 `127.0.0.1:3425` 自动发现、读取模型列表。选择网关模型后，Codex 使用 Responses、Claude Code 使用 Messages，覆盖仅作用于本次子进程；可用于跨原生工具路由。
+- Forma 目前未内置或自动安装 Magpie，也未实现其账户池、订阅协议适配与刷新服务。没有网关时，原生 Codex 只能选择 Codex 登录源，原生 Claude Code 只能选择 Claude 登录源；自建 Agent 可选择任一来源。
+
+“发现”不进行生成；“测试连接”和任务执行会使用所选账户的额度。登录检查成功不保证模型权限、额度或真实生成可用。原工具退出登录后，需在原工具重新登录再刷新来源。
 
 ## 本地数据
 

@@ -52,3 +52,9 @@ Renderer（TypeScript / HTML / CSS）
 - [Claude Code 程序化调用](https://code.claude.com/docs/en/headless)
 
 参考文档只用于调用适配；项目不包含上述产品的凭据、程序或服务授权。
+
+## 登录来源路由（0.2.0-alpha.6）
+
+`login-sources.ts` 将原工具登录状态缩减为状态标志、模型目录与来源；不持久化状态输出或账户凭据。导入模型采用来源加模型 ID 的稳定标识，API 连接不能覆写受管理的来源。调用前按 Model.source 选择 HTTP 或原 CLI。跨原生工具的登录源选择会明确拒绝，防止替换用户选择的执行器。
+
+Magpie 仅接入其已启动的本机标准网关接口。Codex 的 provider 配置通过每次调用的参数传入，Claude 的地址/占位认证通过子进程环境传入；不写全局配置。网关协议、账户刷新、工具桥接由 Magpie 服务负责。CLI 模型参数在 stdin 标志前传入，提示词仍经 stdin，退出与取消保持原进程树处理。
