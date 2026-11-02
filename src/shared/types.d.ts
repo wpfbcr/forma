@@ -27,6 +27,7 @@ export interface Agent {
     tone: string;
 }
 export interface Team {
+    knowledgeBindings?:KnowledgeBinding[]; inheritAgentKnowledge?:Record<string,boolean>; excludedKnowledgeIds?:Record<string,string[]>;
     knowledgeIds?:string[]; skillIds?:string[];
     id: string;
     name: string;
@@ -97,6 +98,8 @@ export interface Round {
     assignments: Assignment[];
 }
 export interface Task {
+    teamKnowledgeBindings?:KnowledgeBinding[];
+    knowledgeBindings?:KnowledgeBinding[]; inheritAgentKnowledge?:Record<string,boolean>; excludedKnowledgeIds?:Record<string,string[]>;
     knowledgeIds?:string[]; skillIds?:string[];
     id: string;
     title: string;
@@ -176,4 +179,6 @@ export interface Executor {
 export interface Skill { id:string; name:string; description:string; content:string; version:number; enabled:boolean; origin:"builtin"|"manual"|"ai"; }
 export interface Library { id:string; name:string; directory?:string; count:number; version:number; status:"ready"|"indexing"|"failed"; error?:string; wiki?:string; wikiDraft?:string; wikiVersion?:number; autoSync?:boolean; }
 export interface Evidence { libraryId:string; library:string; sourceId:string; source:string; sourceVersion:number; citation:string; text:string; }
-export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[]}>; }
+export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[];knowledge?:{libraryId:string;name:string;version:number;origin:string}[]}>; }
+
+export interface KnowledgeBinding { libraryId:string; audience:"all"|"leader"|"selected"; memberIds:string[]; }

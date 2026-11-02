@@ -3,6 +3,7 @@ import path from 'node:path';
 import { randomUUID, createHash } from 'node:crypto';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
+import { effectiveKnowledge } from './knowledge-scope.js';
 import { Store, atomicWrite } from './storage.js';
 import type { Agent, Executor, Task } from './types.js';
 
@@ -10,7 +11,7 @@ export interface Skill { id:string; name:string; description:string; content:str
 export interface Library { id:string; name:string; directory?:string; count:number; version:number; status:'ready'|'indexing'|'failed'; error?:string; wiki?:string; wikiDraft?:string; wikiVersion?:number; autoSync?:boolean; }
 export interface SourceDoc { id:string; name:string; hash:string; content:string; version:number; }
 export interface Evidence { libraryId:string; library:string; sourceId:string; source:string; sourceVersion:number; citation:string; text:string; }
-export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[]}>; }
+export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[];knowledge?:{libraryId:string;name:string;version:number;origin:string}[]}>; }
 const mdSchema=z.object({name:z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(64),description:z.string().trim().min(1).max(1024)});
 export function parseSkill(content:string){const match=content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]+)$/);if(!match)throw new Error('技能需要 YAML 元数据和 Markdown 正文');const meta=mdSchema.parse(parseYaml(match[1]));if(!match[2].trim())throw new Error('技能正文不能为空');if(content.length>40000)throw new Error('技能超过 40000 字符');return meta;}
 export function rankDocuments(docs:SourceDoc[],query:string){const lower=query.toLowerCase(),words=lower.match(/[a-z0-9_-]+|[\u3400-\u9fff]{1,}/g)||[];const terms=[...new Set(words.flatMap(w=>/[\u3400-\u9fff]/.test(w)&&w.length>1?Array.from({length:w.length-1},(_,i)=>w.slice(i,i+2)):w))];return docs.map(doc=>{const text=(doc.name+'\n'+doc.content).toLowerCase();const score=terms.reduce((n,t)=>n+(text.includes(t)?1:0)+(doc.name.toLowerCase().includes(t)?3:0),0);const at=Math.max(0,text.indexOf(terms.find(t=>text.includes(t))||''));return{doc,score,text:doc.content.slice(Math.max(0,at-180),Math.max(0,at-180)+1800)};}).filter(r=>r.score>0||!query.trim()).sort((a,b)=>b.score-a.score).slice(0,8);}
@@ -39,5 +40,5 @@ export class Resources {
  startWatch(id:string){const lib=this.library(id);if(!lib.directory)throw new Error('只能监听关联目录');this.watchers.get(id)?.close();const schedule=()=>{clearTimeout(this.timers.get(id));const timer=setTimeout(()=>{if(this.busy.has(id)){schedule();return;}void this.sync(id).catch(async e=>{await this.store.change(s=>{const l=s.libraries?.find(l=>l.id===id);if(l){l.status='failed';l.error=e.message;}});});},1000);timer.unref();this.timers.set(id,timer);};const watcher=watch(lib.directory,{recursive:true},schedule);watcher.on('error',()=>{watcher.close();this.watchers.delete(id);});this.watchers.set(id,watcher);}
  async toggleWatch(id:string){const lib=this.library(id);if(lib.autoSync){this.watchers.get(id)?.close();this.watchers.delete(id);clearTimeout(this.timers.get(id));}else this.startWatch(id);await this.store.change(s=>{s.libraries!.find(l=>l.id===id)!.autoSync=!lib.autoSync;});}
  shutdown(){for(const w of this.watchers.values())w.close();for(const t of this.timers.values())clearTimeout(t);this.watchers.clear();this.timers.clear();}
- async prepare(t:Task,request:string):Promise<ResourceContext>{const state=this.store.snapshot(),byAgent:ResourceContext['byAgent']={};for(const a of t.members){const knowledgeIds=[...new Set([...(t.knowledgeIds||[]),...(a.knowledgeIds||[])])];const evidence=(await Promise.all(knowledgeIds.map(id=>this.search(id,request)))).flat().slice(0,6);const ids=[...new Set([...(t.skillIds||[]),...(a.skillIds||[])])];const skills=ids.map(id=>state.skills?.find(v=>v.id===id&&v.enabled)).filter((v):v is Skill=>!!v).map(v=>({...v}));byAgent[a.id]={evidence,skills};}return{byAgent};}
+ async prepare(t:Task,request:string):Promise<ResourceContext>{const state=this.store.snapshot(),byAgent:ResourceContext['byAgent']={};for(const a of t.members){const scope=effectiveKnowledge(t,a);const knowledgeIds=scope.map(k=>k.libraryId);const evidence=(await Promise.all(knowledgeIds.map(id=>this.search(id,request)))).flat().slice(0,6);const ids=[...new Set([...(t.skillIds||[]),...(a.skillIds||[])])];const skills=ids.map(id=>state.skills?.find(v=>v.id===id&&v.enabled)).filter((v):v is Skill=>!!v).map(v=>({...v}));byAgent[a.id]={evidence,skills,knowledge:scope.map(k=>{const l=this.library(k.libraryId);return{...k,name:l.name,version:l.version};})};}return{byAgent};}
 }

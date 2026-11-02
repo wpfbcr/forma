@@ -4,9 +4,11 @@
 
 A local-first personal AI workspace. Create agents, connect installed agent tools, and coordinate your team through one leader conversation.
 
-Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.2.0-alpha.1**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
+Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.2.0-alpha.2**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
 
 ## 0.2 新增：知识与技能
+
+知识库详情提供“分配使用”和使用对象列表；Agent 配置提供“知识”；团队提供“共享知识”和成员继承/排除设置；任务上下文显示本轮知识范围与来源版本。团队分配支持全体成员、仅 Leader 和指定成员。
 
 - 新建本地知识库，关联只读目录或导入 Markdown、TXT、CSV、JSON、HTML、文本型 PDF、DOCX。
 - 中文关键词检索、来源标识、资料版本、目录手动/自动同步。

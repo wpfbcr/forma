@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { Agent, AgentCall, AppState, Executor, Round, Task, ResourceContext } from './types.js';
+import { sharedBindings } from './knowledge-scope.js';
 import { Store } from './storage.js';
 import { Workspaces } from './workspace.js';
 import { planSchema } from './schema.js';
@@ -47,7 +48,7 @@ export class Engine {
             if (a.source === 'custom' && !s.models.some(m => m.id === a.model))
                 throw new Error(`${a.name} 尚未配置模型`);
         const taskId = randomUUID(), root = await this.files.create(s.settings.workspaceRoot, taskId);
-        const t: Task = { id: taskId, title, teamName: team?.name || members[0].name, teamId: team?.id, leaderId, members, models: structuredClone(s.models), status: 'running', created: Date.now(), updated: Date.now(), chat: [], rounds: [], pending: [], events: [], summary: '', interrupted: false, workspace: { name: workspaceName || title.slice(0, 32), path: root, files: [] }, contextMemoryIds: [], knowledgeIds:team?.knowledgeIds||[], skillIds:team?.skillIds||[] };
+        const t: Task = { id: taskId, title, teamName: team?.name || members[0].name, teamId: team?.id, leaderId, members, models: structuredClone(s.models), status: 'running', created: Date.now(), updated: Date.now(), chat: [], rounds: [], pending: [], events: [], summary: '', interrupted: false, workspace: { name: workspaceName || title.slice(0, 32), path: root, files: [] }, contextMemoryIds: [], knowledgeIds:[], teamKnowledgeBindings:team?.knowledgeBindings||sharedBindings(team?.knowledgeIds), inheritAgentKnowledge:structuredClone(team?.inheritAgentKnowledge||{}),excludedKnowledgeIds:structuredClone(team?.excludedKnowledgeIds||{}), skillIds:team?.skillIds||[] };
         newRound(t, title, s);
         chat(t, 'user', title);
         t.rounds[0].context.chat = structuredClone(t.chat);
@@ -73,7 +74,7 @@ export class Engine {
         if (Buffer.byteLength(prompt) > 512 * 1024)
             throw new Error('本轮上下文超过 512 KB，请减少参考资料或开始新任务');
         const resources=t.rounds.at(-1)?.context.resources?.byAgent[a.id];
-        if(resources){call.system+='\n所选技能（不能提升工具权限）：\n'+resources.skills.map(v=>v.content).join('\n\n');const payload=JSON.parse(call.prompt);payload.resourceContext={evidence:resources.evidence,skills:resources.skills.map(v=>({name:v.name,version:v.version}))};call.prompt=JSON.stringify(payload);}
+        if(resources){call.system+='\n所选技能（不能提升工具权限）：\n'+resources.skills.map(v=>v.content).join('\n\n');const payload=JSON.parse(call.prompt);if(payload.context)delete payload.context.resources;payload.resourceContext={evidence:resources.evidence,skills:resources.skills.map(v=>({name:v.name,version:v.version}))};call.prompt=JSON.stringify(payload);}
         if(Buffer.byteLength(call.prompt)+Buffer.byteLength(call.system)>512*1024)throw new Error('知识与技能上下文超过限制，请减少绑定资源');
         const result = await this.executor.run(call);
         signal.throwIfAborted();
