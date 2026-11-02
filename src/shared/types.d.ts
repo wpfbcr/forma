@@ -140,6 +140,7 @@ export interface AppState {
     tasks: Task[];
     settings: {
         workspaceRoot: string;
+        defaultModelId?:string;
         concurrency: number;
         maxToolCalls: number;
         allowFileWrites: boolean;
@@ -182,3 +183,5 @@ export interface Evidence { libraryId:string; library:string; sourceId:string; s
 export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[];knowledge?:{libraryId:string;name:string;version:number;origin:string}[]}>; }
 
 export interface KnowledgeBinding { libraryId:string; audience:"all"|"leader"|"selected"; memberIds:string[]; }
+
+export interface GenerationTarget { mode:"model"|"agent"; modelId?:string; agentId?:string; }
