@@ -1,3 +1,4 @@
+import {modelBase} from './provider-http.js';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { Store } from './storage.js';
@@ -68,9 +69,11 @@ export class Service {
                 await this.store.change(s => { s.teams = s.teams.filter(t => t.id !== id); });
                 return true;
             }
+            case 'model.list':{const input=z.object({id:entityId.optional(),endpoint:z.string().url().max(2000),protocol:z.enum(['openai-compatible','anthropic']),apiKey:z.string().max(8192).optional()}).parse(p);const old=this.store.snapshot().models.find(m=>m.id===input.id);if(!input.apiKey?.trim()&&old&&this.vault.has(old.id)&&(modelBase(input.endpoint)!==modelBase(old.endpoint)||input.protocol!==old.protocol))throw new Error('连接地址或协议已变更，请重新输入密钥后获取模型列表');const models=await this.client.listModels({...input,id:old?.id,apiKey:input.apiKey?.trim()||undefined});return{models,endpoint:validateEndpoint(input.endpoint)};}
             case 'model.save': {
                 const input = modelInput.parse(p), id = input.id || randomUUID();
                 const endpoint = validateEndpoint(input.endpoint);
+                const old=this.store.snapshot().models.find(m=>m.id===id);if(!input.apiKey?.trim()&&old&&this.vault.has(id)&&(modelBase(endpoint)!==modelBase(old.endpoint)||input.protocol!==old.protocol))throw new Error('地址或协议已变更，请重新输入密钥后保存');
                 if (input.apiKey?.trim())
                     await this.vault.set(id, input.apiKey.trim());
                 const { apiKey, ...publicInput } = input;

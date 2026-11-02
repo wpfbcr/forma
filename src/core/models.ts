@@ -1,3 +1,4 @@
+import {modelBase,providerHeaders,readProvider,contentText} from './provider-http.js';
 import type { AgentCall, Model } from './types.js';
 import type { Vault } from './vault.js';
 import { Workspaces } from './workspace.js';
@@ -8,29 +9,12 @@ const toolSpecs = [
     { name: 'read_file', description: 'Read a UTF-8 file within your assigned working directory.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
     { name: 'write_file', description: 'Write a UTF-8 file within your assigned working directory.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' } }, required: ['path', 'content'] } }
 ];
-async function boundedJson(response: Response) { const reader = response.body?.getReader(); if (!reader)
-    throw new Error('服务商返回空响应'); const chunks: Uint8Array[] = []; let length = 0; while (true) {
-    const { done, value } = await reader.read();
-    if (done)
-        break;
-    length += value.length;
-    if (length > 8 * 1024 * 1024) {
-        await reader.cancel();
-        throw new Error('模型响应超过 8 MB 限制');
-    }
-    chunks.push(value);
-} try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8'));
-}
-catch {
-    throw new Error('服务商返回的内容不是有效 JSON');
-} }
 export class ModelClient {
     constructor(private vault: Pick<Vault, 'get'>, private workspaces: Workspaces, private request: typeof fetch = fetch) { }
     async post(model: Model, body: unknown, signal: AbortSignal) {
-        const base = validateEndpoint(model.endpoint), key = await this.vault.get(model.id);
+        const base = modelBase(model.endpoint), key = await this.vault.get(model.id);
         const endpoint = model.protocol === 'anthropic' ? `${base}/messages` : `${base}/chat/completions`;
-        const headers: Record<string, string> = { 'content-type': 'application/json' };
+        const headers: Record<string,string> = {...providerHeaders(model.protocol,key),'content-type':'application/json'};
         if (model.protocol === 'anthropic') {
             headers['anthropic-version'] = '2023-06-01';
             if (key)
@@ -38,12 +22,11 @@ export class ModelClient {
         }
         else if (key)
             headers.authorization = 'Bearer ' + key;
-        const response = await this.request(endpoint, { method: 'POST', headers, body: JSON.stringify(body), signal: AbortSignal.any([signal, AbortSignal.timeout(model.timeoutMs)]), redirect: 'error' });
-        if (!response.ok)
-            throw new Error(`模型服务返回 HTTP ${response.status}${response.status === 401 || response.status === 403 ? '，请检查认证与访问权限' : response.status === 429 ? '，请检查额度或稍后重试' : ''}`);
-        return boundedJson(response);
+        const response = await this.request(endpoint, { method: 'POST', headers, body: JSON.stringify({...body as object,stream:false}), signal: AbortSignal.any([signal, AbortSignal.timeout(model.timeoutMs)]), redirect: 'error' });
+        return readProvider(response,'模型调用',model.protocol,true);
     }
-    async test(model: Model) { const result = await this.post(model, model.protocol === 'anthropic' ? { model: model.model, max_tokens: 64, messages: [{ role: 'user', content: 'Reply with OK.' }] } : { model: model.model, max_tokens: 64, messages: [{ role: 'user', content: 'Reply with OK.' }] }, new AbortController().signal); const text = model.protocol === 'anthropic' ? result.content?.filter((x: any) => x.type === 'text').map((x: any) => x.text).join('') : result.choices?.[0]?.message?.content; if (typeof text !== 'string' || !text.trim())
+    async listModels(connection:{id?:string;endpoint:string;protocol:Model['protocol'];apiKey?:string},timeoutMs=20000){const base=modelBase(connection.endpoint);const key=connection.apiKey!==undefined?connection.apiKey:connection.id?await this.vault.get(connection.id):'';const all=new Map<string,{id:string;name:string}>();let cursor='';const seen=new Set<string>();for(let page=0;page<10;page++){const url=new URL(base+'/models');if(connection.protocol==='anthropic'){url.searchParams.set('limit','1000');if(cursor)url.searchParams.set('after_id',cursor);}const response=await this.request(url.toString(),{method:'GET',headers:providerHeaders(connection.protocol,key),signal:AbortSignal.timeout(timeoutMs),redirect:'error'});const json=await readProvider(response,'获取模型列表',connection.protocol);const rows=Array.isArray(json)?json:json.data||json.models;if(!Array.isArray(rows))throw new Error('模型列表格式不受支持，期望 data 或 models 数组');for(const row of rows){const id=typeof row==='string'?row:row?.id||row?.name;if(typeof id!=='string'||!id.trim()||id.length>1000)continue;all.set(id,{id,name:typeof row?.display_name==='string'?row.display_name:id});if(all.size>10000)throw new Error('模型数量超过 10000 条限制');}if(connection.protocol!=='anthropic'||!json.has_more)return[...all.values()].sort((a,b)=>a.id.localeCompare(b.id));if(!json.last_id||seen.has(json.last_id))throw new Error('服务商返回无效的模型分页游标');cursor=json.last_id;seen.add(cursor);}throw new Error('模型列表分页超过限制，请使用服务商提供的过滤接口');}
+    async test(model: Model) { const result = await this.post(model, model.protocol === 'anthropic' ? { model: model.model, max_tokens: 64, messages: [{ role: 'user', content: 'Reply with OK.' }] } : { model: model.model, max_tokens: 64, messages: [{ role: 'user', content: 'Reply with OK.' }] }, new AbortController().signal); const text = model.protocol === 'anthropic' ? result.content?.filter((x: any) => x.type === 'text').map((x: any) => x.text).join('') : contentText(result.choices?.[0]?.message?.content); if (typeof text !== 'string' || !text.trim())
         throw new Error('连接成功，但未收到文本响应'); return { ok: true, capability: 'text', message: '文本调用成功；工具调用能力需通过实际任务验证。' }; }
     async run(call: AgentCall) {
         const model = call.model;
@@ -68,7 +51,7 @@ export class ModelClient {
                 input = null;
             } return { id: x.id, name: x.function.name, input }; });
             if (!toolCalls.length) {
-                const text = anthropic ? (response.content || []).filter((x: any) => x.type === 'text').map((x: any) => x.text).join('\n') : msg.content;
+                const text = anthropic ? (response.content || []).filter((x: any) => x.type === 'text').map((x: any) => x.text).join('\n') : contentText(msg.content);
                 if (typeof text !== 'string' || !text.trim())
                     throw new Error('模型返回空内容');
                 return text;

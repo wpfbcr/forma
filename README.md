@@ -4,7 +4,7 @@
 
 A local-first personal AI workspace. Create agents, connect installed agent tools, and coordinate your team through one leader conversation.
 
-Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.2.0-alpha.3**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
+Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.2.0-alpha.4**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
 
 ## 0.2 新增：知识与技能
 
@@ -57,14 +57,14 @@ node node_modules/electron/install.js
 
 ## 开始第一项任务
 
-1. 在“模型中心”填写服务地址、协议和服务商提供的模型标识。密钥只在需要时填写。
+1. 在“模型中心”填写 Base URL、协议和 API Key，点击“获取模型列表”，搜索并选择模型。显示名称和服务商名称可自动补全；不支持列表的服务可在高级设置手填。
 2. 点击“测试连接”，验证一次真实文本调用。测试可能产生服务商费用。
 3. 创建 Agent 并分配模型；也可以接入已经在终端安装、登录的 Codex 或 Claude Code。
 4. 创建团队并指定 Leader；单个 Agent 也可以独立运行。
 5. 在工作台输入目标和工作空间名称，开始执行。
 6. 后续只与 Leader 对话。资料、上下文、成员进度和成果在右侧工作空间查看。
 
-模型地址包含版本前缀，不包含具体接口。例如兼容服务通常填写 `https://你的服务地址/v1`，程序追加 `/chat/completions`；Anthropic 协议追加 `/messages`。HTTP 仅允许本机地址，远程服务要求 HTTPS。
+模型地址支持服务根地址、版本前缀或完整接口地址；根地址默认补全 /v1，自定义 API 前缀保留。例如兼容服务通常填写 `https://你的服务地址/v1`，程序追加 `/chat/completions`；Anthropic 协议追加 `/messages`。HTTP 仅允许本机地址，远程服务要求 HTTPS。
 
 ## 本地数据
 
