@@ -1,0 +1,25 @@
+{
+  "id": "curated-knowledge-synthesis",
+  "displayName": "多来源证据综合",
+  "summary": "合并重复信息，处理来源冲突，形成有出处的研究结论。",
+  "categoryId": "research",
+  "tags": [
+    "证据",
+    "来源"
+  ],
+  "example": "综合这些资料，标明冲突、可信程度和引用。",
+  "requirements": "使用用户资料或已分配知识；不自带联网搜索。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "enterprise-search/skills/knowledge-synthesis/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "8dc66c66ef0004010bbf2d569251163e90a6675b982e0cb99ef26b4dd1c5a0f6",
+  "contentSha256": "3e9a6aafd62baf37f2c004265aa0bd897fcae92715aed3b3371477862bb1e942",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description"
+  ],
+  "referenceFiles": []
+}

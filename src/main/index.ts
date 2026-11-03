@@ -1,3 +1,4 @@
+import {skillSourceUrl} from '../core/skills.js';
 import { app, BrowserWindow, dialog, ipcMain, safeStorage, session, shell } from 'electron';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
@@ -31,6 +32,7 @@ async function start() {
             if (event.sender !== window?.webContents || event.senderFrame?.url !== renderer)
                 throw new Error('请求来源不受信任');
             const request = z.object({ action: z.string().max(80), payload: z.unknown().optional() }).parse(raw);
+            if(request.action==='skill.openSource'){const id=entityId.parse(request.payload);await shell.openExternal(skillSourceUrl(store.snapshot().skills?.find(s=>s.id===id)));return{ok:true,data:true};}
             if(request.action==='knowledge.chooseDirectory'){const v=z.object({name:z.string().min(1).max(100)}).parse(request.payload);const result=await dialog.showOpenDialog(window!,{title:'选择知识资料目录（只读）',properties:['openDirectory']});if(result.canceled)return{ok:true,data:null};const dir=await fs.realpath(result.filePaths[0]);const id=await service.resources.createLibrary(v.name,dir);await service.resources.sync(id);return{ok:true,data:id};}
             if(request.action==='knowledge.importFiles'){const id=entityId.parse(request.payload);service.resources.library(id);const result=await dialog.showOpenDialog(window!,{title:'导入知识资料',properties:['openFile','multiSelections'],filters:[{name:'文档',extensions:['md','txt','csv','json','pdf','docx','html']}]});return{ok:true,data:result.canceled?null:await service.resources.importFiles(id,result.filePaths)};}
             if (request.action === 'workspace.chooseRoot') {

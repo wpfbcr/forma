@@ -1,0 +1,26 @@
+{
+  "id": "curated-design-critique",
+  "displayName": "设计评审",
+  "summary": "从可用性、信息层级和一致性出发，给出可执行的改进建议。",
+  "categoryId": "design",
+  "tags": [
+    "评审",
+    "体验"
+  ],
+  "example": "评审这份页面说明，按优先级给出改进建议。",
+  "requirements": "提供界面描述、代码或可供 Agent 读取的设计资料。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "design/skills/design-critique/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "3a4f260eb9f60b431782bf6d90f22afb480c0c67860267a032df58a3e1bd19cd",
+  "contentSha256": "e0b3c51a73a7c32ee9b276f2c7189492fc939d723f5718fe9424eb01c42c6be0",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Removed unavailable connector-file hint"
+  ],
+  "referenceFiles": []
+}

@@ -1,0 +1,29 @@
+{
+  "id": "curated-launch",
+  "displayName": "产品发布策划",
+  "summary": "拆解发布准备、渠道、内容和后续反馈，形成可落地的计划。",
+  "categoryId": "marketing",
+  "tags": [
+    "发布",
+    "推广"
+  ],
+  "example": "为这次 Alpha 发布准备渠道和素材清单。",
+  "requirements": "输出策划与草稿；发布、上传或发消息需要用户另行明确授权。",
+  "repository": "coreyhaines31/marketingskills",
+  "path": "skills/launch/SKILL.md",
+  "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+  "publisher": "Marketing Skills",
+  "license": "MIT",
+  "upstreamSha256": "30537ad3f4b0429fcc4053cf6bf04bc0dee316b9e5f7e7ec2e74a9bc44a9ead7",
+  "contentSha256": "0da2fecd8fd58c777211ee36511c514c66e13b0c8ac442117aa5277fe01535a5",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Inlined bundled Markdown reference files"
+  ],
+  "referenceFiles": [
+    "references/shipped-changes.md",
+    "references/site-launch-qa.md"
+  ]
+}

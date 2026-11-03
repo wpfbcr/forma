@@ -1,0 +1,25 @@
+{
+  "id": "curated-verification-before-completion",
+  "displayName": "交付前验证",
+  "summary": "对照实际检查结果说明完成程度，让每项交付结论都有证据。",
+  "categoryId": "development",
+  "tags": [
+    "验证",
+    "交付"
+  ],
+  "example": "检查本次交付，列出已验证项和仍缺少的证据。",
+  "requirements": "只能报告真实执行的检查；无执行环境时明确未验证项。",
+  "repository": "obra/superpowers",
+  "path": "skills/verification-before-completion/SKILL.md",
+  "revision": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+  "publisher": "Superpowers",
+  "license": "MIT",
+  "upstreamSha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+  "contentSha256": "1c79f6f342a958f0cf92719b08f47fb63b61a2e348d394df34654a00bc2f7f39",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description"
+  ],
+  "referenceFiles": []
+}

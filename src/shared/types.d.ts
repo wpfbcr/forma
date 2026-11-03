@@ -131,6 +131,7 @@ export interface Task {
     contextMemoryIds: string[];
 }
 export interface AppState {
+    skillCategories?:SkillCategory[];
     jobs?:ProcessingJob[];
     libraries?:Library[]; skills?:Skill[];
     version: 1;
@@ -179,7 +180,9 @@ export interface Executor {
     run(call: AgentCall): Promise<string>;
 }
 
-export interface Skill { id:string; name:string; description:string; content:string; version:number; enabled:boolean; origin:"builtin"|"manual"|"ai"; }
+export interface SkillCategory { id:string; name:string; tone:"sage"|"blue"|"amber"|"violet"|"rose"|"slate"|"teal"; }
+export interface SkillSource { catalogId:string; repository:string; path:string; revision:string; url:string; publisher:string; license:string; licenseText:string; upstreamSha256:string; mode:"adapted"|"copy"; }
+export interface Skill { id:string; name:string; description:string; content:string; version:number; enabled:boolean; origin:"builtin"|"manual"|"ai"|"github"; displayName?:string; summary?:string; categoryId?:string; tags?:string[]; source?:SkillSource; example?:string; requirements?:string; }
 export interface Library { id:string; name:string; directory?:string; count:number; version:number; status:"ready"|"indexing"|"failed"; error?:string; wiki?:string; wikiDraft?:string; wikiVersion?:number; autoSync?:boolean; }
 export interface Evidence { libraryId:string; library:string; sourceId:string; source:string; sourceVersion:number; citation:string; text:string; }
 export interface ResourceContext { byAgent:Record<string,{evidence:Evidence[];skills:Skill[];knowledge?:{libraryId:string;name:string;version:number;origin:string}[]}>; }
@@ -188,4 +191,4 @@ export interface KnowledgeBinding { libraryId:string; audience:"all"|"leader"|"s
 
 export interface GenerationTarget { mode:"model"|"agent"; modelId?:string; agentId?:string; }
 
-export interface ProcessingJob { id:string;kind:"wiki"|"skill";libraryId?:string;title:string;target:GenerationTarget;targetLabel:string;description?:string;status:"queued"|"running"|"cancelling"|"completed"|"failed"|"cancelled"|"interrupted";stage:string;createdAt:number;startedAt?:number;updatedAt:number;finishedAt?:number;error?:string;resultId?:string;events:{time:number;message:string}[]; }
+export interface ProcessingJob { id:string;kind:"wiki"|"skill";libraryId?:string;title:string;target:GenerationTarget;targetLabel:string;description?:string;skillCategoryId?:string;status:"queued"|"running"|"cancelling"|"completed"|"failed"|"cancelled"|"interrupted";stage:string;createdAt:number;startedAt?:number;updatedAt:number;finishedAt?:number;error?:string;resultId?:string;events:{time:number;message:string}[]; }

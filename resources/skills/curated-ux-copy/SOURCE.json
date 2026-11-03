@@ -1,0 +1,26 @@
+{
+  "id": "curated-ux-copy",
+  "displayName": "产品微文案",
+  "summary": "打磨按钮、错误提示、空状态和引导文案，让操作更容易理解。",
+  "categoryId": "design",
+  "tags": [
+    "微文案",
+    "交互"
+  ],
+  "example": "优化这组上传失败和空状态提示。",
+  "requirements": "提供文案及其使用场景。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "design/skills/ux-copy/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "d46a00a62ec637e9ca9d5f7823ea3e0a4ec26dffc53bb5035f59b48ebfcdcde7",
+  "contentSha256": "fbd8ce63ee16992bf4da1400b847c3dd24640fa14de7ac1ead97c0700624c8ef",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Removed unavailable connector-file hint"
+  ],
+  "referenceFiles": []
+}

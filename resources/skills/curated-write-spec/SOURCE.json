@@ -1,0 +1,26 @@
+{
+  "id": "curated-write-spec",
+  "displayName": "产品需求文档",
+  "summary": "把模糊想法梳理成目标、范围、用户故事与验收标准。",
+  "categoryId": "product",
+  "tags": [
+    "PRD",
+    "需求"
+  ],
+  "example": "把这个离线阅读功能整理成可评审的 PRD。",
+  "requirements": "提供问题、用户和已知约束；外部项目工具为可选。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "product-management/skills/write-spec/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "ca6670913878b4ac4582727562bfced5271492a5a800d934f68c9e7bc1cd4dcc",
+  "contentSha256": "3e6c71c6dc01bfb7ae252afb2d03acefc346924ad6e4cb6d8a7b06b884cfab12",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Removed unavailable connector-file hint"
+  ],
+  "referenceFiles": []
+}

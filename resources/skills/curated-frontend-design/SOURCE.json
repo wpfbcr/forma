@@ -1,0 +1,26 @@
+{
+  "id": "curated-frontend-design",
+  "displayName": "界面视觉设计",
+  "summary": "设计有清晰风格的网页与应用，兼顾排版、层次和细节。",
+  "categoryId": "design",
+  "tags": [
+    "界面",
+    "视觉",
+    "前端"
+  ],
+  "example": "为我的阅读应用设计一页简约的书架界面。",
+  "requirements": "需要界面需求；写入代码时需启用文件工具。",
+  "repository": "anthropics/skills",
+  "path": "skills/frontend-design/SKILL.md",
+  "revision": "ca45fc496a3436251f191354091d557da31c15b5",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
+  "contentSha256": "5233b4cb196162d0a1fddbd15e6078e86d8a45ac8b4d31e5578d1208750c45ef",
+  "licensePath": "skills/frontend-design/LICENSE.txt",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description"
+  ],
+  "referenceFiles": []
+}

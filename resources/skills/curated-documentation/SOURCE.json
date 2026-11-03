@@ -1,0 +1,25 @@
+{
+  "id": "curated-documentation",
+  "displayName": "技术文档写作",
+  "summary": "为不同读者组织 README、接口说明、架构介绍与操作指南。",
+  "categoryId": "writing",
+  "tags": [
+    "文档",
+    "README"
+  ],
+  "example": "为这份项目资料写一个面向新用户的快速开始。",
+  "requirements": "提供真实项目资料；不得编造接口和运行结果。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "engineering/skills/documentation/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "1d469418f786a05be83d2a05f04d68788aeed584d13863a650f5ad73c6c4cf50",
+  "contentSha256": "7047f0d97dacb18efde893b385bd182035f9fa85619a9be37ee2f93f3d648e56",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description"
+  ],
+  "referenceFiles": []
+}

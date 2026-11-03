@@ -1,0 +1,30 @@
+{
+  "id": "curated-copywriting",
+  "displayName": "营销文案创作",
+  "summary": "围绕受众、价值主张与行动目标，写出具体可信的产品文案。",
+  "categoryId": "marketing",
+  "tags": [
+    "文案",
+    "落地页"
+  ],
+  "example": "为这款工具写一页面向个人用户的产品介绍。",
+  "requirements": "提供产品事实、受众与语气；附带上游文案参考。",
+  "repository": "coreyhaines31/marketingskills",
+  "path": "skills/copywriting/SKILL.md",
+  "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+  "publisher": "Marketing Skills",
+  "license": "MIT",
+  "upstreamSha256": "02f0ab1ddd41d95b3c230d4bcff3de6578c8f2e45776c8ef2e4b931636af5bee",
+  "contentSha256": "69cec3b4768552da3fe05a7f640470bde2787ebeafab12aef4da414150bfec84",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Inlined bundled Markdown reference files"
+  ],
+  "referenceFiles": [
+    "references/ai-tells.md",
+    "references/copy-frameworks.md",
+    "references/natural-transitions.md"
+  ]
+}

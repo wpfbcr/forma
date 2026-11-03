@@ -1,0 +1,25 @@
+{
+  "id": "curated-sql-queries",
+  "displayName": "SQL 编写与优化",
+  "summary": "根据表结构组织查询、处理方言差异，并说明性能与正确性风险。",
+  "categoryId": "data",
+  "tags": [
+    "SQL",
+    "分析"
+  ],
+  "example": "根据这个表结构编写留存分析 SQL，并解释边界条件。",
+  "requirements": "需要表结构和数据库类型；数据库执行环境不随技能提供。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "data/skills/sql-queries/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "dbd5a5e2d563d83ca6d4d033206f285f503296eabff4a35545cdb4cb5302bd9a",
+  "contentSha256": "7c3db9274876cfd472875f40a5839b9646c48c22df94f4addd974aff439b5912",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description"
+  ],
+  "referenceFiles": []
+}

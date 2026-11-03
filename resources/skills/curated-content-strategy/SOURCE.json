@@ -1,0 +1,29 @@
+{
+  "id": "curated-content-strategy",
+  "displayName": "内容策略规划",
+  "summary": "从用户问题和产品目标出发，规划主题、选题与分发节奏。",
+  "categoryId": "marketing",
+  "tags": [
+    "内容",
+    "选题"
+  ],
+  "example": "为这个开源工具设计四周内容计划。",
+  "requirements": "使用已有资料；不会自动发布内容或连接 CMS。",
+  "repository": "coreyhaines31/marketingskills",
+  "path": "skills/content-strategy/SKILL.md",
+  "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+  "publisher": "Marketing Skills",
+  "license": "MIT",
+  "upstreamSha256": "5e74201646b8ae0b7ddfd2f4a4a14149096f490667b32bcb9e3a35e7326d88b0",
+  "contentSha256": "8e7b8bfdb501bef909f0a8195c61471a1774878f7aec4b4039e1da2ab449b050",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Inlined bundled Markdown reference files"
+  ],
+  "referenceFiles": [
+    "references/content-distribution.md",
+    "references/headless-cms.md"
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "writing",
+      "name": "写作与表达",
+      "tone": "amber"
+    },
+    {
+      "id": "research",
+      "name": "研究与知识",
+      "tone": "teal"
+    },
+    {
+      "id": "product",
+      "name": "产品与规划",
+      "tone": "blue"
+    },
+    {
+      "id": "design",
+      "name": "设计与体验",
+      "tone": "violet"
+    },
+    {
+      "id": "development",
+      "name": "开发与质量",
+      "tone": "sage"
+    },
+    {
+      "id": "marketing",
+      "name": "营销与增长",
+      "tone": "rose"
+    },
+    {
+      "id": "data",
+      "name": "数据与分析",
+      "tone": "blue"
+    },
+    {
+      "id": "uncategorized",
+      "name": "未分类",
+      "tone": "slate"
+    }
+  ],
+  "skills": [
+    {
+      "id": "curated-frontend-design",
+      "displayName": "界面视觉设计",
+      "summary": "设计有清晰风格的网页与应用，兼顾排版、层次和细节。",
+      "categoryId": "design",
+      "tags": [
+        "界面",
+        "视觉",
+        "前端"
+      ],
+      "example": "为我的阅读应用设计一页简约的书架界面。",
+      "requirements": "需要界面需求；写入代码时需启用文件工具。",
+      "repository": "anthropics/skills",
+      "path": "skills/frontend-design/SKILL.md",
+      "revision": "ca45fc496a3436251f191354091d557da31c15b5",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
+      "contentSha256": "5233b4cb196162d0a1fddbd15e6078e86d8a45ac8b4d31e5578d1208750c45ef"
+    },
+    {
+      "id": "curated-design-critique",
+      "displayName": "设计评审",
+      "summary": "从可用性、信息层级和一致性出发，给出可执行的改进建议。",
+      "categoryId": "design",
+      "tags": [
+        "评审",
+        "体验"
+      ],
+      "example": "评审这份页面说明，按优先级给出改进建议。",
+      "requirements": "提供界面描述、代码或可供 Agent 读取的设计资料。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "design/skills/design-critique/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "3a4f260eb9f60b431782bf6d90f22afb480c0c67860267a032df58a3e1bd19cd",
+      "contentSha256": "e0b3c51a73a7c32ee9b276f2c7189492fc939d723f5718fe9424eb01c42c6be0"
+    },
+    {
+      "id": "curated-ux-copy",
+      "displayName": "产品微文案",
+      "summary": "打磨按钮、错误提示、空状态和引导文案，让操作更容易理解。",
+      "categoryId": "design",
+      "tags": [
+        "微文案",
+        "交互"
+      ],
+      "example": "优化这组上传失败和空状态提示。",
+      "requirements": "提供文案及其使用场景。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "design/skills/ux-copy/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "d46a00a62ec637e9ca9d5f7823ea3e0a4ec26dffc53bb5035f59b48ebfcdcde7",
+      "contentSha256": "fbd8ce63ee16992bf4da1400b847c3dd24640fa14de7ac1ead97c0700624c8ef"
+    },
+    {
+      "id": "curated-write-spec",
+      "displayName": "产品需求文档",
+      "summary": "把模糊想法梳理成目标、范围、用户故事与验收标准。",
+      "categoryId": "product",
+      "tags": [
+        "PRD",
+        "需求"
+      ],
+      "example": "把这个离线阅读功能整理成可评审的 PRD。",
+      "requirements": "提供问题、用户和已知约束；外部项目工具为可选。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "product-management/skills/write-spec/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "ca6670913878b4ac4582727562bfced5271492a5a800d934f68c9e7bc1cd4dcc",
+      "contentSha256": "3e6c71c6dc01bfb7ae252afb2d03acefc346924ad6e4cb6d8a7b06b884cfab12"
+    },
+    {
+      "id": "curated-roadmap-update",
+      "displayName": "产品路线规划",
+      "summary": "整理优先级、依赖与取舍，形成可讨论的阶段路线图。",
+      "categoryId": "product",
+      "tags": [
+        "路线图",
+        "优先级"
+      ],
+      "example": "根据这些需求，整理 Now / Next / Later 路线图。",
+      "requirements": "提供需求清单及资源约束。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "product-management/skills/roadmap-update/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "bdb121e290b590d60b94bca84d1700a8803c78db9f68f2a28fd04ccfe8aceb9e",
+      "contentSha256": "eea26ac7a8149a40e6415a33521351ffddebafe69b943d361ac7a31087db00c9"
+    },
+    {
+      "id": "curated-research-synthesis",
+      "displayName": "用户研究归纳",
+      "summary": "从访谈和反馈中识别主题，保留证据、分歧和行动方向。",
+      "categoryId": "research",
+      "tags": [
+        "访谈",
+        "洞察"
+      ],
+      "example": "归纳这些访谈记录，区分共性、例外和待验证假设。",
+      "requirements": "提供访谈、问卷或反馈原文。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "design/skills/research-synthesis/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "40048615dc81fc8b9b06104769498214d61a35ae4518a0995a12bbbd0ab945a1",
+      "contentSha256": "1e019eb9fadc7969e541aa2a932d5ce4b6f15f3ff4a9354f96f82bc38066683f"
+    },
+    {
+      "id": "curated-knowledge-synthesis",
+      "displayName": "多来源证据综合",
+      "summary": "合并重复信息，处理来源冲突，形成有出处的研究结论。",
+      "categoryId": "research",
+      "tags": [
+        "证据",
+        "来源"
+      ],
+      "example": "综合这些资料，标明冲突、可信程度和引用。",
+      "requirements": "使用用户资料或已分配知识；不自带联网搜索。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "enterprise-search/skills/knowledge-synthesis/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "8dc66c66ef0004010bbf2d569251163e90a6675b982e0cb99ef26b4dd1c5a0f6",
+      "contentSha256": "3e9a6aafd62baf37f2c004265aa0bd897fcae92715aed3b3371477862bb1e942"
+    },
+    {
+      "id": "curated-documentation",
+      "displayName": "技术文档写作",
+      "summary": "为不同读者组织 README、接口说明、架构介绍与操作指南。",
+      "categoryId": "writing",
+      "tags": [
+        "文档",
+        "README"
+      ],
+      "example": "为这份项目资料写一个面向新用户的快速开始。",
+      "requirements": "提供真实项目资料；不得编造接口和运行结果。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "engineering/skills/documentation/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "1d469418f786a05be83d2a05f04d68788aeed584d13863a650f5ad73c6c4cf50",
+      "contentSha256": "7047f0d97dacb18efde893b385bd182035f9fa85619a9be37ee2f93f3d648e56"
+    },
+    {
+      "id": "curated-copy-editing",
+      "displayName": "文案精修",
+      "summary": "分轮检查清晰度、语气、说服力和过时信息，保留核心事实。",
+      "categoryId": "writing",
+      "tags": [
+        "改稿",
+        "清晰表达"
+      ],
+      "example": "精修这份产品介绍，保留事实并解释主要改动。",
+      "requirements": "提供原稿及受众；附带上游编辑检查表。",
+      "repository": "coreyhaines31/marketingskills",
+      "path": "skills/copy-editing/SKILL.md",
+      "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+      "publisher": "Marketing Skills",
+      "license": "MIT",
+      "upstreamSha256": "cec5a771ce37ade292f7f1f6b418e8a6ce6ec3f50163fa5e664afbcb03e085fc",
+      "contentSha256": "f8c09ad751f2db0b4a38fd103202e9303c81e179757cc9da2b717af92132eea2"
+    },
+    {
+      "id": "curated-systematic-debugging",
+      "displayName": "系统化排错",
+      "summary": "先收集证据、复现问题和定位根因，再提出可验证的修复。",
+      "categoryId": "development",
+      "tags": [
+        "调试",
+        "根因"
+      ],
+      "example": "根据这份错误日志和代码，定位根因并给出验证步骤。",
+      "requirements": "实际执行命令需要原 Agent 支持；缺少环境时给出排查方案。",
+      "repository": "obra/superpowers",
+      "path": "skills/systematic-debugging/SKILL.md",
+      "revision": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "publisher": "Superpowers",
+      "license": "MIT",
+      "upstreamSha256": "51c6435d98c83c42c96ba7c35725a0b2c376cd487fb1a4e6bd0ddbe7e33ef202",
+      "contentSha256": "668f495793a883acd604756469e9d6c6e38dc62d106b84dda28e48aeab808162"
+    },
+    {
+      "id": "curated-verification-before-completion",
+      "displayName": "交付前验证",
+      "summary": "对照实际检查结果说明完成程度，让每项交付结论都有证据。",
+      "categoryId": "development",
+      "tags": [
+        "验证",
+        "交付"
+      ],
+      "example": "检查本次交付，列出已验证项和仍缺少的证据。",
+      "requirements": "只能报告真实执行的检查；无执行环境时明确未验证项。",
+      "repository": "obra/superpowers",
+      "path": "skills/verification-before-completion/SKILL.md",
+      "revision": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "publisher": "Superpowers",
+      "license": "MIT",
+      "upstreamSha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+      "contentSha256": "1c79f6f342a958f0cf92719b08f47fb63b61a2e348d394df34654a00bc2f7f39"
+    },
+    {
+      "id": "curated-copywriting",
+      "displayName": "营销文案创作",
+      "summary": "围绕受众、价值主张与行动目标，写出具体可信的产品文案。",
+      "categoryId": "marketing",
+      "tags": [
+        "文案",
+        "落地页"
+      ],
+      "example": "为这款工具写一页面向个人用户的产品介绍。",
+      "requirements": "提供产品事实、受众与语气；附带上游文案参考。",
+      "repository": "coreyhaines31/marketingskills",
+      "path": "skills/copywriting/SKILL.md",
+      "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+      "publisher": "Marketing Skills",
+      "license": "MIT",
+      "upstreamSha256": "02f0ab1ddd41d95b3c230d4bcff3de6578c8f2e45776c8ef2e4b931636af5bee",
+      "contentSha256": "69cec3b4768552da3fe05a7f640470bde2787ebeafab12aef4da414150bfec84"
+    },
+    {
+      "id": "curated-content-strategy",
+      "displayName": "内容策略规划",
+      "summary": "从用户问题和产品目标出发，规划主题、选题与分发节奏。",
+      "categoryId": "marketing",
+      "tags": [
+        "内容",
+        "选题"
+      ],
+      "example": "为这个开源工具设计四周内容计划。",
+      "requirements": "使用已有资料；不会自动发布内容或连接 CMS。",
+      "repository": "coreyhaines31/marketingskills",
+      "path": "skills/content-strategy/SKILL.md",
+      "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+      "publisher": "Marketing Skills",
+      "license": "MIT",
+      "upstreamSha256": "5e74201646b8ae0b7ddfd2f4a4a14149096f490667b32bcb9e3a35e7326d88b0",
+      "contentSha256": "8e7b8bfdb501bef909f0a8195c61471a1774878f7aec4b4039e1da2ab449b050"
+    },
+    {
+      "id": "curated-launch",
+      "displayName": "产品发布策划",
+      "summary": "拆解发布准备、渠道、内容和后续反馈，形成可落地的计划。",
+      "categoryId": "marketing",
+      "tags": [
+        "发布",
+        "推广"
+      ],
+      "example": "为这次 Alpha 发布准备渠道和素材清单。",
+      "requirements": "输出策划与草稿；发布、上传或发消息需要用户另行明确授权。",
+      "repository": "coreyhaines31/marketingskills",
+      "path": "skills/launch/SKILL.md",
+      "revision": "88c79f6528a9347420e57ceb1fff9a60de651768",
+      "publisher": "Marketing Skills",
+      "license": "MIT",
+      "upstreamSha256": "30537ad3f4b0429fcc4053cf6bf04bc0dee316b9e5f7e7ec2e74a9bc44a9ead7",
+      "contentSha256": "0da2fecd8fd58c777211ee36511c514c66e13b0c8ac442117aa5277fe01535a5"
+    },
+    {
+      "id": "curated-sql-queries",
+      "displayName": "SQL 编写与优化",
+      "summary": "根据表结构组织查询、处理方言差异，并说明性能与正确性风险。",
+      "categoryId": "data",
+      "tags": [
+        "SQL",
+        "分析"
+      ],
+      "example": "根据这个表结构编写留存分析 SQL，并解释边界条件。",
+      "requirements": "需要表结构和数据库类型；数据库执行环境不随技能提供。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "data/skills/sql-queries/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "dbd5a5e2d563d83ca6d4d033206f285f503296eabff4a35545cdb4cb5302bd9a",
+      "contentSha256": "7c3db9274876cfd472875f40a5839b9646c48c22df94f4addd974aff439b5912"
+    },
+    {
+      "id": "curated-data-visualization",
+      "displayName": "数据图表设计",
+      "summary": "选择合适图表、组织可视化代码，兼顾可读性与无障碍。",
+      "categoryId": "data",
+      "tags": [
+        "图表",
+        "可视化"
+      ],
+      "example": "为这组月度数据选择图表，并给出可复现的绘图方案。",
+      "requirements": "真实绘图需要 Agent 的 Python 等执行环境；缺少环境时只输出方案或代码。",
+      "repository": "anthropics/knowledge-work-plugins",
+      "path": "data/skills/data-visualization/SKILL.md",
+      "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+      "publisher": "Anthropic",
+      "license": "Apache-2.0",
+      "upstreamSha256": "5811e8b3547cda6bc8af118aaf0d7589e8861cdc9facce6372dc78aea99ab87d",
+      "contentSha256": "2db9edcb7c0709e9bae0a79374e46c1eee7925a1be0a13432582f0dffc5208c7"
+    }
+  ]
+}

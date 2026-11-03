@@ -1,0 +1,30 @@
+{
+  "id": "curated-systematic-debugging",
+  "displayName": "系统化排错",
+  "summary": "先收集证据、复现问题和定位根因，再提出可验证的修复。",
+  "categoryId": "development",
+  "tags": [
+    "调试",
+    "根因"
+  ],
+  "example": "根据这份错误日志和代码，定位根因并给出验证步骤。",
+  "requirements": "实际执行命令需要原 Agent 支持；缺少环境时给出排查方案。",
+  "repository": "obra/superpowers",
+  "path": "skills/systematic-debugging/SKILL.md",
+  "revision": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+  "publisher": "Superpowers",
+  "license": "MIT",
+  "upstreamSha256": "51c6435d98c83c42c96ba7c35725a0b2c376cd487fb1a4e6bd0ddbe7e33ef202",
+  "contentSha256": "668f495793a883acd604756469e9d6c6e38dc62d106b84dda28e48aeab808162",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Inlined bundled Markdown reference files"
+  ],
+  "referenceFiles": [
+    "condition-based-waiting.md",
+    "defense-in-depth.md",
+    "root-cause-tracing.md"
+  ]
+}

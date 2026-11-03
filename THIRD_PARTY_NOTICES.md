@@ -30,3 +30,7 @@ Codex, Claude Code and Magpie are not bundled by Forma. Their executables, crede
 No source code, documentation prose or screenshots from those projects are copied into Forma. Their names are used for attribution and compatibility descriptions; no affiliation or endorsement is implied. Forma's Wiki and job features are independent implementations, not vendored connectors to those projects.
 
 The screenshots under `docs/images/readme` show Forma itself using verification data. The repository's icon assets are part of Forma.
+
+## Curated skill materials
+
+The instruction catalog under `resources/skills` redistributes adapted materials from `anthropics/skills` (frontend-design only, Apache-2.0), `anthropics/knowledge-work-plugins` (Apache-2.0), `obra/superpowers` (MIT), and `coreyhaines31/marketingskills` (MIT). These materials retain their original licenses; they are not relicensed as Forma-owned code. Each bundle includes the pinned original, license, source record and supporting Markdown where applicable. See [the catalog inventory](resources/skills/README.md) for exact revisions and changes. User copies retain upstream attribution.

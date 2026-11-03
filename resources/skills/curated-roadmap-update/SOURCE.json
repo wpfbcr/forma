@@ -1,0 +1,26 @@
+{
+  "id": "curated-roadmap-update",
+  "displayName": "产品路线规划",
+  "summary": "整理优先级、依赖与取舍，形成可讨论的阶段路线图。",
+  "categoryId": "product",
+  "tags": [
+    "路线图",
+    "优先级"
+  ],
+  "example": "根据这些需求，整理 Now / Next / Later 路线图。",
+  "requirements": "提供需求清单及资源约束。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "product-management/skills/roadmap-update/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "bdb121e290b590d60b94bca84d1700a8803c78db9f68f2a28fd04ccfe8aceb9e",
+  "contentSha256": "eea26ac7a8149a40e6415a33521351ffddebafe69b943d361ac7a31087db00c9",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Removed unavailable connector-file hint"
+  ],
+  "referenceFiles": []
+}

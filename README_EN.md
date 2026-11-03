@@ -5,7 +5,7 @@
   <p>An open-source personal AI desktop workspace for models, knowledge and reusable skills.</p>
 
 [![Check](https://github.com/wpfbcr/forma/actions/workflows/check.yml/badge.svg?branch=main)](https://github.com/wpfbcr/forma/actions/workflows/check.yml)
-[![Version](https://img.shields.io/badge/version-0.2.0--alpha.6-456b54)](https://github.com/wpfbcr/forma/releases)
+[![Version](https://img.shields.io/badge/version-0.2.0--alpha.7-456b54)](https://github.com/wpfbcr/forma/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [简体中文](README.md) · **English**
@@ -20,7 +20,7 @@ Forma brings agents you create, installed tools such as Codex and Claude Code, k
 It is designed for individual users working across coding, research, writing and everyday tasks. New installations start with an empty personal workspace: choose your own models, build your own agents and assemble your own teams.
 
 > [!NOTE]
-> **0.2.0-alpha.6** is an early preview. The UI is currently primarily Simplified Chinese. The macOS Apple Silicon desktop has been checked locally; see [Actions](https://github.com/wpfbcr/forma/actions) and the [validation log](docs/validation.md) for other platforms. Packages are unsigned and not notarized. Model access, quotas and external CLI compatibility depend on your environment.
+> **0.2.0-alpha.7** is an early preview. The UI is currently primarily Simplified Chinese. The macOS Apple Silicon desktop has been checked locally; see [Actions](https://github.com/wpfbcr/forma/actions) and the [validation log](docs/validation.md) for other platforms. Packages are unsigned and not notarized. Model access, quotas and external CLI compatibility depend on your environment.
 
 ## Quick start
 
@@ -84,9 +84,9 @@ Choose all members, only the Leader or selected agents. Each round records evide
 
 ![Team knowledge scope](docs/images/readme/knowledge-scope.png)
 
-Write `SKILL.md`, ask AI for a draft, or enable one of eight bundled instruction skills.
+Browse 16 pinned GitHub instruction skills across seven categories. Search by purpose or source, organize custom categories, inspect licensing, and copy skills into personal versions. Write SKILL.md or ask AI for a categorized draft. The eight original basic templates remain available. [Skill guide](docs/skills.md)
 
-![Skill library](docs/images/readme/skills.png)
+![Categorized skill library](docs/images/readme/skills-categorized.png)
 
 </details>
 
@@ -100,7 +100,7 @@ Write `SKILL.md`, ask AI for a draft, or enable one of eight bundled instruction
 | Models | OpenAI-compatible Chat Completions, Anthropic Messages, catalog discovery, connection tests and global default |
 | Existing sign-ins | Native login checks and CLI-backed models; optional local Magpie gateway |
 | Knowledge and Wiki | Directory sync, file import, keyword search, source versions, scoped access and reviewable Wiki drafts |
-| Skills and memory | Editing, versions, AI drafts, eight bundled instruction skills, enable controls and manually attached preferences |
+| Skills and memory | Categories, search, 16 curated GitHub skills, personal copies and AI drafts, source licenses, eight basic templates, enable controls and manually attached preferences |
 | Background jobs | Durable Wiki / skill records, stages, elapsed time, errors, cancellation, retries and interruption recovery |
 | Local data | Files and JSON state, OS-backed encryption for API keys, light and dark themes |
 

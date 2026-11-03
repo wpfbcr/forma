@@ -5,7 +5,7 @@
   <p>面向个人进阶用户的开源 AI 桌面工作台，让模型、知识和技能围绕任务协作。</p>
 
 [![Check](https://github.com/wpfbcr/forma/actions/workflows/check.yml/badge.svg?branch=main)](https://github.com/wpfbcr/forma/actions/workflows/check.yml)
-[![Version](https://img.shields.io/badge/version-0.2.0--alpha.6-456b54)](https://github.com/wpfbcr/forma/releases)
+[![Version](https://img.shields.io/badge/version-0.2.0--alpha.7-456b54)](https://github.com/wpfbcr/forma/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Desktop](https://img.shields.io/badge/desktop-macOS%20%7C%20Windows-696e68)](#快速开始)
 
@@ -25,7 +25,7 @@ Forma 将个人创建的 Agent、已安装的 Codex / Claude Code、知识库与
 - **积累可复用能力**：知识库按使用对象分配，技能可以自己写、让 AI 写或启用预置项。
 
 > [!NOTE]
-> 当前为 **0.2.0-alpha.6**，界面主要为简体中文。macOS Apple Silicon 已进行本地桌面验证；Windows 和其他平台的实际情况见 [Actions](https://github.com/wpfbcr/forma/actions) 与[验证记录](docs/validation.md)。安装包未签名、公证；真实模型权益、额度和外部工具兼容性需在你的环境中确认。
+> 当前为 **0.2.0-alpha.7**，界面主要为简体中文。macOS Apple Silicon 已进行本地桌面验证；Windows 和其他平台的实际情况见 [Actions](https://github.com/wpfbcr/forma/actions) 与[验证记录](docs/validation.md)。安装包未签名、公证；真实模型权益、额度和外部工具兼容性需在你的环境中确认。
 
 ## 快速开始
 
@@ -89,9 +89,9 @@ CLI 来源通过原工具执行；原生 Codex 与 Claude Code 之间跨工具�
 
 ![团队知识分配](docs/images/readme/knowledge-scope.png)
 
-技能支持手写 `SKILL.md`、AI 辅助生成草稿，以及 8 个预置指令技能的选择与启用。
+技能仓库收录 16 项 GitHub 精选，覆盖写作、研究、产品、设计、开发、营销与数据分析。支持分类管理、搜索、来源筛选、复制编辑与来源许可查看；还可手写或让 AI 生成自己的技能。原有 8 项基础模板继续保留。[分类与使用说明](docs/skills.md)
 
-![技能仓库](docs/images/readme/skills.png)
+![分类技能仓库](docs/images/readme/skills-categorized.png)
 
 </details>
 
@@ -105,7 +105,7 @@ CLI 来源通过原工具执行；原生 Codex 与 Claude Code 之间跨工具�
 | 模型中心 | OpenAI 兼容 Chat Completions、Anthropic Messages、模型列表发现、连接测试、全局默认模型 |
 | 已有登录 | Codex / Claude Code 登录状态检查、模型导入、原 CLI 执行；可选 Magpie 本机网关 |
 | 知识库与 Wiki | 目录同步、文件导入、关键词检索、来源版本、Agent/团队/任务范围、可审阅 Wiki 草稿 |
-| 技能与记忆 | 技能编辑与版本、AI 草稿、8 个预置指令技能、启用管理、手动附加偏好与工作约定 |
+| 技能与记忆 | 分类与搜索、16 项 GitHub 精选、手写/复制/AI 草稿、来源与许可、8 项基础模板、启用管理、手动附加偏好与工作约定 |
 | 后台任务 | Wiki / 技能处理记录、阶段与耗时、失败详情、取消/重试、退出后的中断记录 |
 | 本地存储 | 文件与 JSON 状态持久化、模型密钥使用系统安全存储加密、浅色与深色主题 |
 
@@ -132,6 +132,7 @@ CLI 来源通过原工具执行；原生 Codex 与 Claude Code 之间跨工具�
 | [文档索引](docs/README.md) | 入门、设计、验证和贡献资料 |
 | [安装与构建](docs/installation.md) | 安装包、源码运行、平台构建和常见问题 |
 | [使用指南](docs/getting-started.md) | 第一项任务、知识、技能、后台记录和本地数据 |
+| [分类技能仓库](docs/skills.md) | 分类管理、精选目录、复制编辑与兼容范围 |
 | [模型与登录来源](docs/model-sources.md) | API、原 CLI、Magpie 与调用边界 |
 | [架构说明](docs/architecture.md) | 进程、存储、执行与来源路由 |
 | [验证记录](docs/validation.md) | 已完成的检查和未验证项 |

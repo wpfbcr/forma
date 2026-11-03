@@ -6,6 +6,7 @@ Forma 是个人 AI 桌面工作台，当前为 Alpha。此处文档区分已经�
 
 - [安装与构建](installation.md)：安装包、源码运行、平台构建与下载排查。
 - [使用指南](getting-started.md)：模型、Agent、团队、任务空间、知识与技能。
+- [分类技能仓库](skills.md)：精选技能、分类管理、复制编辑与许可。
 - [模型与登录来源](model-sources.md)：API、Codex、Claude Code、Magpie 与调用差异。
 - [安全边界与报告渠道](../SECURITY.md)：文件、凭据、模型及外部进程权限。
 
@@ -16,6 +17,7 @@ Forma 是个人 AI 桌面工作台，当前为 Alpha。此处文档区分已经�
 - [检索基准](retrieval-benchmark.md)：合成数据结果、失败案例与复现方法。
 - [截图说明](images/readme/README.md)：产品导览素材的来源。
 - [更新日志](../CHANGELOG.md)：已合入的功能与修复。
+- [0.2.0-alpha.7 发行说明](releases/0.2.0-alpha.7.md)：分类技能仓库、收录来源与兼容范围。
 - [0.2.0-alpha.6 发行说明](releases/0.2.0-alpha.6.md)：附件、校验方式、构建来源与使用边界。
 
 ## 规划与贡献

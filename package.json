@@ -1,6 +1,6 @@
 {
   "name": "forma",
-  "version": "0.2.0-alpha.6",
+  "version": "0.2.0-alpha.7",
   "description": "A local-first personal AI workspace for your agents and teams",
   "author": "Forma contributors",
   "license": "MIT",
@@ -45,7 +45,8 @@
       "package.json",
       "LICENSE",
       "THIRD_PARTY_NOTICES.md",
-      "THIRD_PARTY_LICENSES.txt"
+      "THIRD_PARTY_LICENSES.txt",
+      "resources/skills/**/*"
     ],
     "asar": true,
     "mac": {

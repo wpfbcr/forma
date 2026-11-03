@@ -8,3 +8,5 @@
 *.png binary
 *.ico binary
 *.icns binary
+# Preserve vendored skill material, including upstream Markdown whitespace.
+resources/skills/** -whitespace

@@ -1,0 +1,25 @@
+{
+  "id": "curated-data-visualization",
+  "displayName": "数据图表设计",
+  "summary": "选择合适图表、组织可视化代码，兼顾可读性与无障碍。",
+  "categoryId": "data",
+  "tags": [
+    "图表",
+    "可视化"
+  ],
+  "example": "为这组月度数据选择图表，并给出可复现的绘图方案。",
+  "requirements": "真实绘图需要 Agent 的 Python 等执行环境；缺少环境时只输出方案或代码。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "data/skills/data-visualization/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "5811e8b3547cda6bc8af118aaf0d7589e8861cdc9facce6372dc78aea99ab87d",
+  "contentSha256": "2db9edcb7c0709e9bae0a79374e46c1eee7925a1be0a13432582f0dffc5208c7",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description"
+  ],
+  "referenceFiles": []
+}

@@ -1,0 +1,26 @@
+{
+  "id": "curated-research-synthesis",
+  "displayName": "用户研究归纳",
+  "summary": "从访谈和反馈中识别主题，保留证据、分歧和行动方向。",
+  "categoryId": "research",
+  "tags": [
+    "访谈",
+    "洞察"
+  ],
+  "example": "归纳这些访谈记录，区分共性、例外和待验证假设。",
+  "requirements": "提供访谈、问卷或反馈原文。",
+  "repository": "anthropics/knowledge-work-plugins",
+  "path": "design/skills/research-synthesis/SKILL.md",
+  "revision": "2574e29377c7173d0cecffef29a6ecbd7f8ccb5d",
+  "publisher": "Anthropic",
+  "license": "Apache-2.0",
+  "upstreamSha256": "40048615dc81fc8b9b06104769498214d61a35ae4518a0995a12bbbd0ab945a1",
+  "contentSha256": "1e019eb9fadc7969e541aa2a932d5ce4b6f15f3ff4a9354f96f82bc38066683f",
+  "licensePath": "LICENSE",
+  "changes": [
+    "Added Forma capability and language guidance",
+    "Used Chinese catalog description",
+    "Removed unavailable connector-file hint"
+  ],
+  "referenceFiles": []
+}
