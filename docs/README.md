@@ -16,6 +16,7 @@ Forma 是个人 AI 桌面工作台，当前为 Alpha。此处文档区分已经�
 - [检索基准](retrieval-benchmark.md)：合成数据结果、失败案例与复现方法。
 - [截图说明](images/readme/README.md)：产品导览素材的来源。
 - [更新日志](../CHANGELOG.md)：已合入的功能与修复。
+- [0.2.0-alpha.6 发行说明](releases/0.2.0-alpha.6.md)：附件、校验方式、构建来源与使用边界。
 
 ## 规划与贡献
 

@@ -101,3 +101,13 @@
 - 本机只读发现识别 Codex 和 Claude Code 的订阅登录。终端受限环境未连通网关；桌面应用读到本机 3425 端口的 Magpie 兼容模型目录。未发起真实模型生成，未复制或持久化登录令牌。
 - Magpie 参数和请求路由使用固定输入验证；订阅额度、模型实际权益与网关跨协议生成/工具调用仍需真实账户验收。
 - 独立桌面测试验证：发现登录源 → 导入 Codex 默认模型 → 保存全局默认 → 分配并创建自建 Agent；界面与本地状态一致。截图 `output/login-sources.png`。未点击真实生成测试。
+
+## 2026-11-03 公开仓库与发行检查
+
+- 仓库：https://github.com/wpfbcr/forma ，默认 main，公开源码，MIT 被 GitHub 正确识别。
+- [首次三平台 CI](https://github.com/wpfbcr/forma/actions/runs/41596539386)：Linux / macOS / Windows 的类型检查、每个平台 71 项测试、构建及文档链接检查全部通过。
+- [安装包构建](https://github.com/wpfbcr/forma/actions/runs/41596598252)：从提交 da8d085 成功构建 macOS arm64 DMG/ZIP 和 Windows x64 NSIS；没有新增 Windows 桌面实机验收结论。
+- 本地检查已提交历史和发布文件，未发现匹配的密钥或私人绝对路径；未将应用数据、认证文件、依赖目录与安装包提交至 Git。
+- 发行应用包含 Forma LICENSE、第三方说明和锁定运行依赖的许可文件/上游声明汇总。Electron 自带许可材料保留。
+- 中英文 README、本地文档与截图入口检查通过；截图为独立验证数据。GitHub 私密漏洞报告已启用。
+- 下载附件与已知限制见[发行说明](releases/0.2.0-alpha.6.md)。构建和固定响应测试不代表真实服务商或订阅生成已经完成联调。

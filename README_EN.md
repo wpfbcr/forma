@@ -31,7 +31,7 @@ Open **[GitHub Releases](https://github.com/wpfbcr/forma/releases)** and select 
 | Platform | Availability |
 | --- | --- |
 | macOS Apple Silicon | ZIP application bundle; extract and move `Forma.app` to Applications |
-| Windows x64 | NSIS packaging workflow; check the assets of the individual release for an installer |
+| Windows x64 | NSIS installer; CI build passed, Windows desktop validation is still pending |
 | Intel Mac / Linux | No promised installer or full desktop support yet; source builds and compatibility reports are welcome |
 
 Check the download source and published checksum if the OS cannot verify the developer. Signing and notarization are not complete. Do not disable system-wide protections to install an Alpha.

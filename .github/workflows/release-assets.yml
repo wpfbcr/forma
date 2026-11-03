@@ -1,0 +1,67 @@
+name: Prepare release assets
+on:
+  workflow_dispatch:
+    inputs:
+      build_run:
+        description: Successful Build unsigned installers run ID
+        required: true
+        type: string
+      release_tag:
+        description: Existing draft prerelease tag (for example v0.2.0-alpha.6)
+        required: true
+        type: string
+permissions:
+  actions: read
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: ${{ github.repository }}
+      BUILD_RUN: ${{ inputs.build_run }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Validate build and draft release
+        id: validate
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, re, subprocess, json
+          run_id, tag, repo = os.environ['BUILD_RUN'], os.environ['RELEASE_TAG'], os.environ['REPOSITORY']
+          if not re.fullmatch(r'\d+', run_id) or not re.fullmatch(r'v\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?', tag):
+              raise SystemExit('Invalid run ID or release tag')
+          def gh(*args):
+              return json.loads(subprocess.check_output(['gh', *args], text=True))
+          run = gh('api', f'repos/{repo}/actions/runs/{run_id}')
+          release = gh('release', 'view', tag, '--repo', repo, '--json', 'tagName,isDraft,isPrerelease,targetCommitish')
+          if run['path'] != '.github/workflows/packages.yml' or run['conclusion'] != 'success' or run['event'] != 'workflow_dispatch':
+              raise SystemExit('Requires a successful manual installer build from this repository')
+          sha = run['head_sha']
+          if not re.fullmatch(r'[a-f0-9]{40}', sha):
+              raise SystemExit('Invalid build commit')
+          package = json.loads(subprocess.check_output(['git', 'show', f'{sha}:package.json'], text=True))
+          if not release['isDraft'] or not release['isPrerelease'] or release['tagName'] != tag or release['targetCommitish'] != sha or tag != 'v' + package['version']:
+              raise SystemExit('Draft prerelease must match the exact build commit and package version')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"version={package['version']}\ncommit={sha}\n")
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.build_run }}
+          pattern: '*-unsigned'
+          path: release/artifacts
+      - name: Prepare checksums and provenance
+        env:
+          VERSION: ${{ steps.validate.outputs.version }}
+          BUILD_COMMIT: ${{ steps.validate.outputs.commit }}
+        run: node scripts/prepare-release.mjs release/artifacts release/upload "$VERSION" "$REPOSITORY" "$BUILD_RUN" "$BUILD_COMMIT"
+      - name: Upload to draft release
+        run: gh release upload "$RELEASE_TAG" release/upload/* --repo "$REPOSITORY" --clobber

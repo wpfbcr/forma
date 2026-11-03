@@ -57,6 +57,7 @@ npm run dist
 - macOS 配置为 DMG / ZIP，Windows 配置为 NSIS；建议在目标系统上构建。
 - GitHub [安装包工作流](https://github.com/wpfbcr/forma/actions/workflows/packages.yml) 可手动触发，生成 macOS arm64 / Windows x64 构建附件，不会自动发布 Release。
 - 没有配置 Apple Developer / Windows 签名证书；安装包工作流禁用自动寻找签名身份。
+- 维护者可运行 `Prepare release assets`，填写成功构建的 run ID 与已有草稿预发布标签。流程核对精确来源提交与版本后上传附件，保持 Release 为草稿，最后由维护者发布。构建来源见 `BUILD_INFO.json`。
 
 源码编译成功、CI 通过、安装包构建成功和实机功能验收是不同层面的检查，详见[验证记录](validation.md)。
 
