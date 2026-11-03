@@ -21,4 +21,16 @@ Forma 是本地桌面软件，能够调用模型、读写工作目录并启动�
 - 状态与工作资料默认未整体加密；只有模型密钥使用独立加密存储。
 - 子进程取消不等于回滚，已执行的外部操作或文件改动仍可能存在。
 
-公开仓库前尚需完成代码签名、发行验证与进一步审计。报告问题时不要附上密钥、认证文件或含私人内容的完整工作空间。
+## 支持与发行状态
+
+当前仅维护 main 分支及最新 Alpha 的安全修复。旧预览版本没有长期支持承诺。代码签名、公证、完整发行验证与进一步审计尚未完成；公开源码不代表完成安全认证。
+
+## 报告安全问题
+
+请使用 [GitHub 私密漏洞报告](https://github.com/wpfbcr/forma/security/advisories/new)，描述受影响版本、触发条件、最小复现和可能影响。不要通过公开 Issue 披露可利用细节、密钥、认证文件或含私人内容的完整工作空间。若报告入口暂不可用，可先创建不含漏洞细节的 Issue 请求私密联系渠道。
+
+维护者会尽力确认和修复，但 Alpha 阶段不承诺固定响应时限。普通功能问题可使用 Issues。
+
+## Security reports (English)
+
+Only the current main branch and latest Alpha receive active fixes. Use [GitHub private vulnerability reporting](https://github.com/wpfbcr/forma/security/advisories/new). Include affected versions, a minimal reproduction and impact; do not post credentials, private workspaces or exploit details in public issues. Signing, notarization and full release validation remain incomplete. No fixed response SLA is promised.

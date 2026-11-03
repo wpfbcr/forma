@@ -18,7 +18,9 @@
     "pack": "npm run build && electron-builder --dir --publish never",
     "dist": "npm run build && electron-builder --publish never",
     "build:core": "tsc -p tsconfig.json",
-    "bench:retrieval": "npm run build:core && node benchmarks/retrieval.cjs"
+    "bench:retrieval": "npm run build:core && node benchmarks/retrieval.cjs",
+    "docs:check": "node scripts/check-docs.mjs",
+    "licenses:generate": "node scripts/third-party-notices.mjs"
   },
   "dependencies": {
     "mammoth": "^1.9.1",
@@ -40,7 +42,10 @@
     },
     "files": [
       "dist/**/*",
-      "package.json"
+      "package.json",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md",
+      "THIRD_PARTY_LICENSES.txt"
     ],
     "asar": true,
     "mac": {
@@ -61,5 +66,13 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpfbcr/forma.git"
+  },
+  "homepage": "https://github.com/wpfbcr/forma#readme",
+  "bugs": {
+    "url": "https://github.com/wpfbcr/forma/issues"
   }
 }

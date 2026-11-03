@@ -1,150 +1,176 @@
-# Forma
+<div align="center">
+  <img src="resources/icon.png" width="88" height="88" alt="Forma 标志">
+  <h1>Forma</h1>
+  <p><strong>你的 Agent，你的团队，一个持续工作的 AI 空间。</strong></p>
+  <p>面向个人进阶用户的开源 AI 桌面工作台，让模型、知识和技能围绕任务协作。</p>
 
-**个人打造的 Agent，自己的 AI 团队，一个持续工作的空间。**
+[![Check](https://github.com/wpfbcr/forma/actions/workflows/check.yml/badge.svg?branch=main)](https://github.com/wpfbcr/forma/actions/workflows/check.yml)
+[![Version](https://img.shields.io/badge/version-0.2.0--alpha.6-456b54)](https://github.com/wpfbcr/forma/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Desktop](https://img.shields.io/badge/desktop-macOS%20%7C%20Windows-696e68)](#快速开始)
 
-A local-first personal AI workspace. Create agents, connect installed agent tools, and coordinate your team through one leader conversation.
+**简体中文** · [English](README_EN.md)
 
-Forma 是面向 Windows 与 macOS 的开源桌面项目。当前版本为 **0.2.0-alpha.5**，已从 HTML 原型迁移到 Electron + TypeScript 应用，使用真实本地存储和模型调用接口。
+[项目介绍](#项目介绍) · [快速开始](#快速开始) · [产品导览](#产品导览) · [功能概览](#功能概览) · [文档](#文档) · [参与贡献](#参与贡献)
+</div>
 
-## 0.2 新增：知识与技能
+## 项目介绍
 
-Wiki 整理和 AI 技能生成改为后台任务。提交后立即返回，可在知识库“处理记录”或全局顶部“处理记录”查看阶段、用时、执行模型/Agent、错误和结果。支持取消与手动重试；退出应用会中断调用，重启后保留记录，不自动再次消耗额度。
+Forma 将个人创建的 Agent、已安装的 Codex / Claude Code、知识库与技能放进同一个桌面工作台。你定义角色和团队，只与 Team Leader 持续对话；Leader 负责规划、分派、协调和交付。任务的资料、上下文、执行记录与成果保留在本地工作空间，下一轮可以接着做。
 
-模型中心支持全局默认模型，用于 AI 编写技能等平台生成任务。Wiki 整理可以直接选模型（默认使用全局配置），也可选择 Agent；Agent 的任务执行模型独立配置。
+适合希望同时处理编程、研究、写作和日常工作的个人用户。首次启动为空白个人空间，按自己的需要选择模型、创建 Agent 和组织团队。
 
-知识库详情提供“分配使用”和使用对象列表；Agent 配置提供“知识”；团队提供“共享知识”和成员继承/排除设置；任务上下文显示本轮知识范围与来源版本。团队分配支持全体成员、仅 Leader 和指定成员。
+- **自由组合**：自建 Agent 或接入已有工具，按角色选择模型与职责。
+- **围绕任务工作**：持续对话与真实文件空间并排，保留过程和成果版本。
+- **积累可复用能力**：知识库按使用对象分配，技能可以自己写、让 AI 写或启用预置项。
 
-- 新建本地知识库，关联只读目录或导入 Markdown、TXT、CSV、JSON、HTML、文本型 PDF、DOCX。
-- 中文关键词检索、来源标识、资料版本、目录手动/自动同步。
-- 使用已配置的 Agent 整理 Wiki 草稿；人工采纳后保存正文及修订，并可被后续检索。
-- 技能源码编辑、AI 辅助创建草稿、8 个可选预置技能、启用与版本管理。
-- 为 Agent、团队或任务绑定知识和技能；每轮执行固定所用证据和技能内容，保存资源快照。
+> [!NOTE]
+> 当前为 **0.2.0-alpha.6**，界面主要为简体中文。macOS Apple Silicon 已进行本地桌面验证；Windows 和其他平台的实际情况见 [Actions](https://github.com/wpfbcr/forma/actions) 与[验证记录](docs/validation.md)。安装包未签名、公证；真实模型权益、额度和外部工具兼容性需在你的环境中确认。
 
-当前技能以指令和模板为主，脚本及扩展资源包执行尚未开放。当前检索为本地关键词检索；每库最多 500 个来源、16 MB 解析文本，单文件最多 10 MB、解析文本最多 256 KB。扫描件 OCR、向量检索、复杂文档排版、分批主题图谱整理和外部 llm_wiki 连接器尚未实现。Wiki 草稿每次处理前 30 份资料、每份最多 4000 字符。
+## 快速开始
 
-新增内容由 Forma 独立实现，未复制 nashsu/llm_wiki 的 GPL 代码。AI 技能创建与 Wiki 整理使用用户自己的 Agent，实际调用需用户配置后验证。
+### 方式一：下载桌面应用
 
-## 已实现
+前往 **[GitHub Releases](https://github.com/wpfbcr/forma/releases)**，按每个版本列出的系统和架构下载附件。Alpha 版本标记为预发布，不能通过 `/releases/latest` 获取。
 
-- 自建 Agent：职责、模型、工作方式、文件工具、记忆配置。
-- 本机 Codex / Claude Code 安装检测与调用适配；沿用原工具认证。
-- 用户创建团队、指定 Leader、编辑职责；快捷列表与可拖动画布。
-- 用户自带模型连接：OpenAI 兼容 Chat Completions、Anthropic Messages；支持本机 HTTP 服务。
-- 真实任务工作空间、资料文件、完整对话、各轮上下文、执行记录与成果版本。
-- Leader 规划、依赖校验、成员并行执行、统一审阅交付。
-- 持续对话、执行中追加要求、暂停、停止、失败恢复。
-- 文件工具的路径检查与读写限制；模型密钥通过操作系统安全存储加密。
-- 文件预览、历史版本与工作空间 ZIP 导出；浅色/深色主题。
+| 平台 | 当前说明 |
+| --- | --- |
+| macOS Apple Silicon | 提供 ZIP 应用包；解压后将 `Forma.app` 放入“应用程序” |
+| Windows x64 | 提供 NSIS 构建流程；是否已有安装包以该版本附件为准 |
+| Intel Mac / Linux | 暂未承诺安装包或完整桌面支持；可自行源码构建并反馈兼容问题 |
 
-首次启动没有预设密钥、假安装状态或模拟任务。先配置自己的模型或接入已安装的 Agent。
+若系统提示无法验证开发者，请先核对下载来源和版本校验值。正式签名和公证尚未完成；不建议关闭系统整体安全保护。
 
-## 源码运行
+### 方式二：从源码运行
 
-需要 Node.js **22.12+**（推荐 24 LTS）、npm 和 Git。
+需要 **Node.js 22.12+**（推荐 24 LTS）、npm 与 Git。日常使用不需要 Docker、外部数据库或 Python。
 
-在项目目录中执行：
-
-```sh
+```bash
+git clone https://github.com/wpfbcr/forma.git
+cd forma
 npm ci
 npm run dev
 ```
 
-首次运行会下载项目锁定的官方 Electron 运行时。必要时可以先执行：
+第一次安装依赖会下载锁定版本的 Electron 运行时。网络或下载异常见[安装与构建](docs/installation.md)。应用通过 Electron 启动，不能直接双击 `src/renderer/index.html` 使用。
 
-```sh
-node node_modules/electron/install.js
-```
+### 开始第一项任务
 
-`npm run dev` 会先编译应用，再打开桌面窗口。这里的 `src/renderer/index.html` 需要桌面进程提供本地接口，不能作为独立网页运行；之前的纯 HTML 演示不属于这个仓库。
+1. 打开**模型中心**，点击“发现本机登录源”，导入已登录的 Codex / Claude Code 模型；或添加 API 服务，填写地址与密钥后获取模型列表。
+2. 创建自己的 **Agent**，配置职责、模型、记忆和文件工具；也可以直接接入本机已有 Agent。
+3. 创建团队并指定 **Leader**，通过画布或快捷列表配置成员。单个 Agent 也可独立工作。
+4. 在**工作台**描述目标，选择 Agent 或团队，开始任务。后续向 Leader 补充要求，右侧查看资料、上下文、执行与成果。
+5. 在模型中心设置**全局默认模型**，用于 Wiki 整理和 AI 编写技能；Agent 的执行模型单独配置。
 
-## 开始第一项任务
+“发现登录源”和“获取模型列表”不发起生成；“测试连接”、Wiki、技能生成及任务执行会消耗对应账户额度。Forma 不提供内置付费模型额度。
 
-1. 在“模型中心”点击“发现本机登录源”，接入已登录的 Codex / Claude Code，无需填写 Base URL 和 API Key；也可以添加 API 服务，通过地址与密钥获取模型列表。
-2. 点击“测试连接”，验证一次真实文本调用。测试可能产生服务商费用。
-3. 创建 Agent 并分配模型；也可以接入已经在终端安装、登录的 Codex 或 Claude Code。
-4. 创建团队并指定 Leader；单个 Agent 也可以独立运行。
-5. 在工作台输入目标和工作空间名称，开始执行。
-6. 后续只与 Leader 对话。资料、上下文、成员进度和成果在右侧工作空间查看。
+## 产品导览
 
-模型地址支持服务根地址、版本前缀或完整接口地址；根地址默认补全 /v1，自定义 API 前缀保留。例如兼容服务通常填写 `https://你的服务地址/v1`，程序追加 `/chat/completions`；Anthropic 协议追加 `/messages`。HTTP 仅允许本机地址，远程服务要求 HTTPS。
+截图来自实际桌面应用的独立测试空间，内容为验证数据，不是模型效果或性能承诺。[截图说明](docs/images/readme/README.md)
 
-## 已登录账户与 Magpie 路由
+### 模型与已有登录
 
-模型中心可检查 Codex、Claude Code 的原生登录状态。模型加入后可分配给自建 Agent、同类原生 Agent、团队成员，或设为 Wiki / AI 技能生成的全局默认模型。认证和刷新由原 CLI 维护，Forma 不读取或复制认证文件、钥匙串令牌，也不修改原工具的全局配置。
+发现本机 Codex、Claude Code 的登录与模型目录，加入模型中心后分配给 Agent 或平台生成任务。已运行的 Magpie 本机网关可自动读取模型列表。
 
-- Codex 模型目录来自本机模型缓存，另提供“当前默认模型”；缓存可能过期。
-- Claude Code 提供默认模型及 sonnet / opus / haiku 别名，由原工具解析；不是账户在线权益列表。
-- 使用 CLI 来源的自建 Agent 会通过对应原 CLI 执行，工具与权限由该 CLI 适配器控制。API 模型仍通过 HTTP 执行，二者并非完全相同的运行环境。
-- 已运行的 [Magpie](https://github.com/yetone/magpie) 网关可在本机 `127.0.0.1:3425` 自动发现、读取模型列表。选择网关模型后，Codex 使用 Responses、Claude Code 使用 Messages，覆盖仅作用于本次子进程；可用于跨原生工具路由。
-- Forma 目前未内置或自动安装 Magpie，也未实现其账户池、订阅协议适配与刷新服务。没有网关时，原生 Codex 只能选择 Codex 登录源，原生 Claude Code 只能选择 Claude 登录源；自建 Agent 可选择任一来源。
+![本机登录来源与模型选择](docs/images/readme/login-sources.png)
 
-“发现”不进行生成；“测试连接”和任务执行会使用所选账户的额度。登录检查成功不保证模型权限、额度或真实生成可用。原工具退出登录后，需在原工具重新登录再刷新来源。
+CLI 来源通过原工具执行；原生 Codex 与 Claude Code 之间跨工具选模需要 Magpie 网关。Forma 当前没有内置完整的 Magpie 账户池或订阅适配服务。详见[模型与登录来源](docs/model-sources.md)。
 
-## 本地数据
+### 知识库与可见的处理过程
 
-应用默认将配置存入 Electron 的应用数据目录：
+导入文件或关联只读目录，为整个团队、Leader 或指定 Agent 分配知识。可直接检索原资料，也可选择模型或 Agent 整理 Wiki 草稿，再由你审阅采纳。处理记录显示阶段、用时、错误与结果，并支持取消和手动重试。
 
-- macOS：`~/Library/Application Support/Forma` 或开发构建的应用名称对应目录。
-- Windows：`%APPDATA%/Forma` 或开发构建的应用名称对应目录。
+![Wiki 后台处理阶段与结果入口](docs/images/readme/wiki-processing.png)
 
-具体工作空间位置可以在“设置”中查看和更改。开发时可通过 `FORMA_DATA_DIR` 指定独立的应用数据目录。
+<details>
+<summary>查看知识分配与技能仓库</summary>
+
+按团队控制全体、仅 Leader 或指定成员的知识范围；每轮固定所用来源与版本。
+
+![团队知识分配](docs/images/readme/knowledge-scope.png)
+
+技能支持手写 `SKILL.md`、AI 辅助生成草稿，以及 8 个预置指令技能的选择与启用。
+
+![技能仓库](docs/images/readme/skills.png)
+
+</details>
+
+## 功能概览
+
+| 模块 | 当前能力 |
+| --- | --- |
+| Agent 与团队 | 自建角色、本机 Agent 接入、独立模型与职责、团队 Leader、可拖动画布、快捷列表 |
+| 任务工作台 | Leader 唯一对话入口、依赖分工、受限并行、持续对话、追加要求、暂停/停止/恢复 |
+| 任务工作空间 | 资料、上下文快照、轮次记录、成员目录、成果版本、文件预览与 ZIP 导出 |
+| 模型中心 | OpenAI 兼容 Chat Completions、Anthropic Messages、模型列表发现、连接测试、全局默认模型 |
+| 已有登录 | Codex / Claude Code 登录状态检查、模型导入、原 CLI 执行；可选 Magpie 本机网关 |
+| 知识库与 Wiki | 目录同步、文件导入、关键词检索、来源版本、Agent/团队/任务范围、可审阅 Wiki 草稿 |
+| 技能与记忆 | 技能编辑与版本、AI 草稿、8 个预置指令技能、启用管理、手动附加偏好与工作约定 |
+| 后台任务 | Wiki / 技能处理记录、阶段与耗时、失败详情、取消/重试、退出后的中断记录 |
+| 本地存储 | 文件与 JSON 状态持久化、模型密钥使用系统安全存储加密、浅色与深色主题 |
+
+### 当前边界
+
+- **检索**：本地关键词方案，尚无向量检索、重排或 OCR；不能承诺海量资料召回质量。[实测与已知缺口](docs/retrieval-benchmark.md)
+- **Wiki**：目前为主题概览草稿，单次取前 30 份资料、每份最多 4000 字符；不是完整的多页面知识图谱。
+- **容量**：导入路径具有 500 文件/16 MiB 索引等保护，但不同入口尚未完全统一，不能视为可靠的大库容量合同。
+- **技能**：当前为指令与模板，不执行任意技能脚本或第三方资源包。
+- **执行**：展示阶段及完整回复，尚无逐 token 输出；原 CLI 每次使用独立会话，依靠 Forma 上下文继续工作。
+- **权限**：内置 API 文件工具限制在成员目录；原生 CLI 依靠自身权限机制，工作目录分离不等于操作系统沙箱。
+- **后续能力**：MCP、联网搜索服务、定时任务、云同步、自动更新和预算计费尚未开放。[路线图](docs/roadmap.md)
+
+## 数据与隐私
+
+配置与资料保存在本机，API 密钥独立加密，不进入界面状态或工作空间导出。使用云模型或已登录的云端 Agent 时，所需资料仍会发送给对应服务；本地优先不等于推理离线。状态、知识资料和普通文件目前不做整体加密。
+
+默认数据目录为 macOS 的 `~/Library/Application Support/Forma`、Windows 的 `%APPDATA%/Forma`；开发构建的实际名称可能不同。工作空间根目录可在设置中更改。目录结构、备份与开发隔离见[使用指南](docs/getting-started.md)，权限边界见 [SECURITY.md](SECURITY.md)。
+
+## 文档
+
+| 从这里开始 | 内容 |
+| --- | --- |
+| [文档索引](docs/README.md) | 入门、设计、验证和贡献资料 |
+| [安装与构建](docs/installation.md) | 安装包、源码运行、平台构建和常见问题 |
+| [使用指南](docs/getting-started.md) | 第一项任务、知识、技能、后台记录和本地数据 |
+| [模型与登录来源](docs/model-sources.md) | API、原 CLI、Magpie 与调用边界 |
+| [架构说明](docs/architecture.md) | 进程、存储、执行与来源路由 |
+| [验证记录](docs/validation.md) | 已完成的检查和未验证项 |
+| [更新日志](CHANGELOG.md) / [路线图](docs/roadmap.md) | 当前变化与下一阶段方向 |
+
+## 开发
+
+核心使用 **Electron + TypeScript**，界面为 HTML / CSS / TypeScript；主进程集中处理状态、文件、凭据与模型调用。结构如下：
 
 ```text
-应用数据目录/
-  state.json                  # 个人配置与任务状态
-  credentials.enc.json        # 经系统安全存储加密的密钥
-  workspaces/<任务 ID>/
-    资料/
-    上下文/
-    会话/
-    轮次/<轮次编号>/
-    成员/<Agent ID>/           # 各成员的实际工作目录
-    成员产物/
-    成果/
-    .forma/versions/           # 文件历史版本
+src/
+  core/          # 执行、资源、模型、文件和本地状态
+  main/          # Electron 窗口、原生能力与 IPC
+  renderer/      # 工作台界面
+  shared/        # 共享类型
+tests/          # 固定响应回归测试
+docs/           # 使用、设计与验证文档
+benchmarks/     # 可复现的检索基准
 ```
 
-任务资料可能发送给你选择的模型服务商；本地优先不代表云模型推理离线。模型密钥不会返回界面，也不包含在工作空间导出中。
-
-## 开发与检查
-
-```sh
-npm run typecheck
-npm test
-npm run build
-npm run check
+```bash
+npm run check             # 类型检查、测试、构建
+npm run bench:retrieval   # 合成数据检索基准
+npm run pack              # 当前平台应用目录
+npm run dist              # 当前平台安装包
 ```
 
-测试使用固定的执行器和响应数据，不调用付费模型，也不复用开发者登录。
+测试不使用真实模型密钥或订阅额度。GitHub Actions 提供 Linux / macOS / Windows 检查和手动触发的安装包构建；构建成功不等于已完成各平台实机验收。
 
-## 安装包构建
+## 参与贡献
 
-```sh
-npm run pack       # 当前平台的应用目录
-npm run dist       # 当前平台安装包
-```
+欢迎通过 [Issues](https://github.com/wpfbcr/forma/issues) 反馈可复现问题、提出使用场景，或提交 Pull Request。流程为 Fork → 分支 → 修改 → 验证 → PR，详见[贡献指南](CONTRIBUTING.md)。安全问题请使用[私密报告渠道](SECURITY.md#报告安全问题)，不要公开凭据或私人资料。
 
-- macOS：DMG / ZIP；在对应架构的 macOS 上构建。
-- Windows：NSIS 安装程序；在 Windows 上构建。
-- 构建产物输出到 `release/`，不提交 Git。
-- GitHub Actions 提供检查矩阵，以及手动触发的未签名安装包构建。
+## 致谢与许可
 
-尚未配置 Apple Developer 签名、公证和 Windows 代码签名。此阶段不把构建配置等同于已完成双平台发行验证，也没有发布 GitHub Release。
+- [WeKnora](https://github.com/Tencent/WeKnora)：README 信息组织与知识处理交互的参考。
+- [Magpie](https://github.com/yetone/magpie)：已有登录与模型路由的参考及可选网关。
+- [llm_wiki](https://github.com/nashsu/llm_wiki)：个人知识整理工作流的参考。
 
-## Alpha 边界
+Forma 独立实现当前功能，没有复制上述项目代码，也不捆绑其账户凭据或服务授权。依赖和外部工具保留各自许可，见[第三方说明](THIRD_PARTY_NOTICES.md)。
 
-- 已有自动化测试覆盖核心运行逻辑；真实服务商和外部 Agent 需要使用者配置后联调。
-- Codex 使用其自身沙箱；Claude Code 限制工具集合。Forma 的工作目录分离不构成额外的操作系统沙箱。
-- 外部 Agent 每次调用建立独立执行会话，通过任务上下文继续工作，暂不复用原 CLI 的原生会话 ID。
-- 暂停先停止新步骤派发，等待在途操作收尾；停止会取消请求并尝试终止进程树。
-- 中断后不会自动重放外部动作。继续执行前需要检查已产生的文件；外部副作用无法自动撤销。
-- 目前显示阶段进度和完整回复，尚未实现逐 token 流式输出。
-- MCP、联网搜索服务、通用命令工具、定时任务、云同步、自动更新和预算计费未开放。
-- 成员产物归档暂限 6 层目录、100 个文件、单文件 256 KB 的文本；其他文件仍可从真实工作目录访问。
-- 状态为版本化 JSON 文件存储，适合初期单人使用；大规模历史数据索引与迁移后续完善。
-
-详细设计见 [产品定义](docs/product-definition.md)、[架构说明](docs/architecture.md) 和 [安全边界](SECURITY.md)。当前实测范围见 [验证记录](docs/validation.md)。
-
-## 贡献与许可
-
-欢迎提交问题和改进，见 [贡献指南](CONTRIBUTING.md)。本项目使用 [MIT License](LICENSE)。
+Forma 源码以 **[MIT License](LICENSE)** 发布。欢迎使用、修改与分发，请保留许可和版权声明。
